@@ -110,8 +110,6 @@ class paymentController extends DController
             ];
         }
 
-
-
         // Lưu thành công thì Chuyển hướng trang đến payment success
         header('Location: /booknest_website/paymentController/viewPaymentSuccess');
         exit();
