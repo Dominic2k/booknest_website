@@ -23,23 +23,8 @@ function sendConfirmationEmail($toEmail, $bookInOrderDetails, $userName, $totalP
         $mail->CharSet = 'UTF-8';
         $mail->Subject = 'Order Confirmation';
 
-        // Create email content
-        // $orderItemsHtml = '';
-        // foreach ($bookInOrderDetails as $item) {
-        //     $orderItemsHtml .= "
-        //         <tr>
-        //             <td><img src='/../public/img/{$item['path']}' alt='{$item['title']}' width='100'></td>
-        //             <td>{$item['title']}</td>
-        //             <td>" . number_format($item['price'], 0, ',', '.') . "</td>
-        //             <td>{$item['quantity']}</td>
-        //             <td>" . number_format($item['price'] * $item['quantity'], 0, ',', '.') . "</td>
-        //         </tr>
-        //     ";
-        // }
-        $baseUrl = "http://localhost:8080/booknest_website"; // URL cơ sở, ví dụ: https://yourwebsite.com
         $orderItemsHtml = '';
         foreach ($bookInOrderDetails as $item) {
-            $imageUrl = "{$baseUrl}/public/img/{$item['path']}";
             $orderItemsHtml .= "
                 <tr>
                     <td>{$item['title']}</td>
@@ -62,19 +47,11 @@ function sendConfirmationEmail($toEmail, $bookInOrderDetails, $userName, $totalP
                     padding: 0;
                 }
                 .email-container {
-                    max-width: 800px;
                     margin: 20px auto;
                     padding: 20px;
                     background-color: #ffffff;
                     border-radius: 10px;
                     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
-                .email-header {
-                    font-size: 28px;
-                    color:rgb(99, 32, 10);
-                    text-align: center;
-                    margin-bottom: 20px;
-                    font-weight: bold;
                 }
                 .order-details table {
                     width: 100%;
@@ -93,8 +70,7 @@ function sendConfirmationEmail($toEmail, $bookInOrderDetails, $userName, $totalP
         </head>
         <body>
             <div class='email-container'>
-                <div class='email-header'>Order Confirmation</div>
-                <div class='email-body'>
+                <div class='email-content'>
                     <p>Hello <strong>{$userName}</strong>,</p>
                     <p>Thank you for your order at BookNest!</p>
                     <p>Here are the details of your order:</p>

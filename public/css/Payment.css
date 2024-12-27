@@ -145,6 +145,7 @@ body {
 .main-content {
   display: flex;
   margin-left: 40px;
+  margin-top: 60px;
 }
 
 .delivery-form {

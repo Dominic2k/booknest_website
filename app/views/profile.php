@@ -98,8 +98,8 @@
     </ul>
     <div class="right-header">
         <?php if (isset($_SESSION['is_logged_in'])): ?>
-            <div class="iconCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></div>
-            <div class="iconUser"><i class="fa-solid fa-user icon-user"></i></div>
+            <div class="iconCart"><a href="<?php echo BASE_URL; ?>cartController/viewCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></a></div>
+            <div class="iconUser"><a href="<?php echo BASE_URL; ?>userController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
             <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
             <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>
         <?php else: ?>

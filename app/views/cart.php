@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giỏ hàng</title>
+    <title>Your Cart</title>
     <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/css/homepage.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
@@ -72,12 +72,6 @@
             margin-right: 10px;
         }
 
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         .cart-item-quantity button {
             background-color: #ddd;
             border: none;
@@ -109,6 +103,10 @@
             justify-content: space-around;
         }
 
+        .cart-actions a{
+            text-decoration: none;
+        }
+
         .continue-shopping-btn {
             background-color: #ddd;
             color: #333;
@@ -138,12 +136,12 @@
             background-color: #7d5240;
             transform: scale(1.05);
         }
-
+/* 
         #cart td:nth-child(2),
         #cart td:nth-child(4),
         #cart td:nth-child(1) {
             vertical-align: baseline;
-        }
+        } */
 
     .quantity-wrapper {
         display: flex;
@@ -185,6 +183,8 @@
         font-size: 16px;
         transition: background-color 0.3s, color 0.3s;
     }
+
+    
     </style>
 </head>
     <?php if (isset($_SESSION['flash_message'])): ?>
@@ -202,31 +202,30 @@
 <body>
     <!-- Header -->
     <header class="header">
-    <div class="logo-brand">
-        <img src="../public/img/image.png" alt="BookNest Logo" class="logo">
-        <h1 class="brand-name"><a href="/booknest_website/">BookNest</a></h1>
-    </div>
-    <ul class="navigation">
-        <li class="nav-link active"><a href="/booknest_website/">Home</a></li>
-        <li class="nav-link"><a href="#">Search</a></li>
-    </ul>
-    <div class="right-header">
-        <?php if (isset($_SESSION['is_logged_in'])): ?>
-            <div class="iconCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></div>
-            <div class="iconUser"><i class="fa-solid fa-user icon-user"></i></div>
-            <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
-            <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>
-        <?php else: ?>
-            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/registerForm">Sign up</a></button>
-            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/loginForm">Log In</a></button>
-        <?php endif; ?>
-    </div>
+        <div class="logo-brand">
+            <img src="../public/img/image.png" alt="BookNest Logo" class="logo">
+            <h1 class="brand-name"><a href="/booknest_website/">BookNest</a></h1>
+        </div>
+        <ul class="navigation">
+            <li class="nav-link active"><a href="/booknest_website/">Home</a></li>
+            <li class="nav-link"><a href="#">Search</a></li>
+        </ul>
+        <div class="right-header">
+            <?php if (isset($_SESSION['is_logged_in'])): ?>
+                <div class="iconCart"><a href="<?php echo BASE_URL; ?>cartController/viewCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></a></div>
+                <div class="iconUser"><a href="<?php echo BASE_URL; ?>userController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
+                <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
+                <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>
+            <?php else: ?>
+                <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/registerForm">Sign up</a></button>
+                <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/loginForm">Log In</a></button>
+            <?php endif; ?>
+        </div>
     </header>
     <!-- body -->
     <div class="cart-wrapper">
         <div class="cart" id="cart">
             <h1 id="title">Your shopping cart</h1>
-            <p class="cart-subtitle">There are 3 items in your cart</p>
             <table class="cart-table">
                 <thead>
                     <tr>
@@ -245,21 +244,31 @@
                             <img src="../public/img/<?php echo $value['image_path'] ?>" alt="Book Image">
                             <p><?php echo $value['title'] ?></p>
                         </td>
-                        <td class="cart-item-price original-price"><?php echo $value['price'] ?></td>
+                        <!-- Định dạng giá sách -->
+                        <td class="cart-item-price">
+                            <?php echo number_format($value['price'], 0, ',', '.') . 'đ'; ?>
+                        </td>
                         <td class="cart-item-quantity">
                             <button class="btn-decrement">-</button>
-                            <span class="quantity-input" id="quantity"><?php echo $value['quantity'] ?></span>
+                            <span class="quantity-input" id="quantity">
+                                <?php echo $value['quantity']; ?>
+                            </span>
                             <button class="btn-increment">+</button>
                         </td>
-                        <td class="cart-item-total or"><?php echo $value['price'] * $value['quantity'] ?></td>
-                        <td><a href="<?php echo BASE_URL; ?>cartController/deleteItemFromCart?order_item_id=<?php echo $value['order_item_id'] ?>&order_id=<?php echo $value['order_id']; ?>" class="cart-item-remove">&times;</a></td>
+                        <!-- Định dạng tổng giá -->
+                        <td class="cart-item-total">
+                            <?php echo number_format($value['price'] * $value['quantity'], 0, ',', '.') . 'đ'; ?>
+                        </td>
+                        <td>
+                            <a href="<?php echo BASE_URL; ?>cartController/deleteItemFromCart?order_item_id=<?php echo $value['order_item_id'] ?>&order_id=<?php echo $value['order_id']; ?>" class="cart-item-remove">&times;</a>
+                        </td>
                     </tr>
                     <?php } ?>
                 </tbody>
             </table>
             <div id="cart-total" style="text-align: right; font-weight: bold; margin-top: 20px;"></div>
             <div class="cart-actions">
-                <button class="continue-shopping-btn">Continue shopping</button>
+                <a href="<?php echo BASE_URL; ?>" class="continue-shopping-btn">Continue shopping</a>
                 <button class="payment-btn">Payment</button>
             </div>
         </div>
@@ -314,10 +323,25 @@
             const decrementButton = item.querySelector(".btn-decrement");
             const incrementButton = item.querySelector(".btn-increment");
             const quantityInput = item.querySelector(".quantity-input");
-            const bookId = item.dataset.bookId; // Đảm bảo thêm thuộc tính data-book-id vào HTML
-            const orderId = item.dataset.orderId; // Đảm bảo thêm thuộc tính data-order-id vào HTML
+            const totalPriceElement = item.querySelector(".cart-item-total"); // Chọn phần tử hiển thị tổng giá
+            const priceElement = item.querySelector(".cart-item-price"); // Chọn phần tử hiển thị giá gốc
+            const bookId = item.dataset.bookId;
+            const orderId = item.dataset.orderId;
+
+            const formatCurrency = (amount) => {
+                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
+                    .format(amount)
+                    .replace("₫", "đ"); // Thay ký hiệu ₫ bằng đ
+            };
 
             const updateQuantity = (newQuantity) => {
+                // Cập nhật giao diện ngay lập tức
+                const price = parseFloat(priceElement.textContent.replace(/\./g, '').replace("đ", '')); // Loại bỏ định dạng cũ
+                const totalPrice = price * newQuantity;
+                totalPriceElement.textContent = formatCurrency(totalPrice); // Hiển thị định dạng mới
+                quantityInput.textContent = newQuantity; // Cập nhật số lượng hiển thị (nếu cần)
+
+                // Gửi yêu cầu tới server để cập nhật database
                 fetch('/booknest_website/cartController/updateQuantity', {
                     method: 'POST',
                     headers: {
@@ -329,18 +353,15 @@
                         quantity: newQuantity,
                     }),
                 })
-                .then((response) => response.json())  // Chuyển dữ liệu trả về thành JSON
+                .then((response) => response.json())
                 .then((data) => {
-                    console.log("Dữ liệu trả về từ server:", data);  // Kiểm tra dữ liệu
-                    if (data.success) {
-                        console.log("Cập nhật số lượng thành công!");
-                    } else {
-                        // alert("Có lỗi xảy ra khi cập nhật số lượng: " + data.message);
+                    console.log("Dữ liệu trả về từ server:", data);
+                    if (!data.success) {
+                        console.error("Có lỗi xảy ra khi cập nhật số lượng:", data.message);
                     }
                 })
                 .catch((error) => {
                     console.error("Lỗi:", error);
-                    // alert("Có lỗi khi cập nhật số lượng.");
                 });
             };
 
@@ -348,18 +369,18 @@
                 let quantity = parseInt(quantityInput.textContent || quantityInput.value);
                 if (quantity > 1) {
                     quantity--;
-                    quantityInput.textContent = quantity;
-                    updateQuantity(quantity); // Gọi hàm cập nhật số lượng
+                    updateQuantity(quantity); // Cập nhật ngay khi giảm số lượng
                 }
             });
 
             incrementButton.addEventListener("click", () => {
                 let quantity = parseInt(quantityInput.textContent || quantityInput.value);
                 quantity++;
-                quantityInput.textContent = quantity;
-                updateQuantity(quantity); // Gọi hàm cập nhật số lượng
+                updateQuantity(quantity); // Cập nhật ngay khi tăng số lượng
             });
         });
+
+
 
     </script>
 </body>

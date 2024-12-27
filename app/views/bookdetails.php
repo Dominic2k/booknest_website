@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,27 +15,27 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="logo-brand">
-            <img src="../public/img/image.png" alt="BookNest Logo" class="logo">
-            <h1 class="brand-name"><a href="/booknest_website/">BookNest</a></h1>
-        </div>
-        <ul class="navigation">
-            <li class="nav-link active"><a href="/booknest_website/">Home</a></li>
-            <li class="nav-link"><a href="#">Search</a></li>
-        </ul>
-        <div class="right-header">
-            <?php if (isset($_SESSION['is_logged_in'])): ?>
-                <div class="iconCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></div>
-                <div class="iconUser"><a href="<?php echo BASE_URL; ?>userController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
-                <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
-                <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>
-            <?php else: ?>
-                <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/registerForm">Sign up</a></button>
-                <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/loginForm">Log In</a></button>
-            <?php endif; ?>
-        </div>
-    </header>
+<header class="header">
+    <div class="logo-brand">
+        <img src="../public/img/image.png" alt="BookNest Logo" class="logo">
+        <h1 class="brand-name"><a href="/booknest_website/">BookNest</a></h1>
+    </div>
+    <ul class="navigation">
+        <li class="nav-link active"><a href="/booknest_website/">Home</a></li>
+        <li class="nav-link"><a href="#">Search</a></li>
+    </ul>
+    <div class="right-header">
+        <?php if (isset($_SESSION['is_logged_in'])): ?>
+            <div class="iconCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></div>
+            <div class="iconUser"><a href="<?php echo BASE_URL; ?>userController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
+            <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
+            <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>
+        <?php else: ?>
+            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/registerForm">Sign up</a></button>
+            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/loginForm">Log In</a></button>
+        <?php endif; ?>
+    </div>
+</header>
     <div class="book-details-container">
         <div class="images-details-wrapper">
             <!-- Hình ảnh sách -->
@@ -58,13 +57,25 @@
                 }
                 ?>
             </div>
+            <!-- Chi tiết sách -->
             <div class="details-wrapper">
                 <?php foreach ($bookById as $key => $value) { ?>
-
+                    
                     <div class="title"><?php echo $value['title'] ?></div>
                     <div class="price-quantity-wrapper">
                         <div class="price">
-
+                            <span class="original-price"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?></span>
+                        </div>
+                        <div class="quantity-wrapper">
+                            <label for="quantity">Quantity:</label>
+                            <div class="quantity-buttons">
+                                <button class="btn-decrement">-</button>
+                                <span class="quantity-input" id="quantity">1</span>
+                                <button class="btn-increment">+</button>
+                            </div>
+                        </div>
+                        <div id="quantity-message" class="quantity-message"></div>
+                    </div>
                     <!-- nút bấm -->
                     <div class="button-wrapper">
                         <a href="javascript:void(0);" id="add-to-cart" class="btn add-to-cart" data-book-id="<?php echo $value['book_id']; ?>">Add to cart</a>

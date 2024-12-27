@@ -175,5 +175,4 @@ class OrderModel extends DModel {
     public function updateOrderItemQuantity($table_order_items, $data, $condition) {
         return $this->db->update($table_order_items, $data, $condition);
     }
-
 }

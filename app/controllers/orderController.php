@@ -22,7 +22,12 @@ class orderController extends DController {
 
         // Kiểm tra session người dùng
         if (!isset($_SESSION['current_user'])) {
-            die("Bạn chưa đăng nhập.");
+            $_SESSION['flash_message'] = [
+                'type' => 'error',
+                'message' => 'Bạn chưa đăng nhập. Vui lòng đăng nhập vào hệ thống!'
+            ];
+            header('Location: /booknest_website/userController/loginForm');
+            exit();
         }
         $userId = $_SESSION['current_user']['user_id'];
 
@@ -43,6 +48,8 @@ class orderController extends DController {
         if (!$bankTransferInfo) {
             die("Không lấy được thông tin thanh toán.");
         }
+        // Truyền dữ liệu vào view nếu không có POST hoặc sau khi xử lý thành công
+        $data['bankTransferInfo'] = $bankTransferInfo;
 
         // Kiểm tra nếu có dữ liệu POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -55,7 +62,12 @@ class orderController extends DController {
 
             // Kiểm tra dữ liệu có hợp lệ không
             if (!$paymentMethod || !$addressDelivery || !$userName || !$userPhone) {
-                die("Vui lòng nhập đầy đủ thông tin.");
+                $_SESSION['flash_message'] = [
+                    'type' => 'error',
+                    'message' => 'Vui lòng điền đầy đủ thông tin!'
+                ];
+                header('Location: /booknest_website/orderController/showPaymentInfo');
+                exit();
             }
 
             // Thêm thông tin thanh toán vào bảng payment
@@ -76,9 +88,6 @@ class orderController extends DController {
             header("Location: /booknest_website/orderController/showBookOrder");
             exit();
         }
-
-        // Truyền dữ liệu vào view nếu không có POST hoặc sau khi xử lý thành công
-        $data['bankTransferInfo'] = $bankTransferInfo;
         $this->load->view('Payment', $data);
     }
 
@@ -88,7 +97,12 @@ class orderController extends DController {
     
         // Kiểm tra session người dùng
         if (!isset($_SESSION['current_user'])) {
-            die("Bạn chưa đăng nhập.");
+            $_SESSION['flash_message'] = [
+                'type' => 'error',
+                'message' => 'Bạn chưa đăng nhập. Vui lòng đăng nhập vào hệ thống!'
+            ];
+            header('Location: /booknest_website/userController/loginForm');
+            exit();
         }
         $userId = $_SESSION['current_user']['user_id'];
     
