@@ -42,10 +42,6 @@ class paymentController extends DController
 
         $this->load->view('Payment', $data);
     }
-    public function viewPaymentSuccess()
-    {
-        $this->load->view('payment_success');
-    }
 
     public function checkout()
     {
@@ -174,7 +170,7 @@ class paymentController extends DController
         }
 
         // Lưu thành công thì Chuyển hướng trang đến payment success
-        header('Location: /booknest_website/paymentController/viewPaymentSuccess');
+        header('Location: /booknest_website/orderController/showBookOrder?order_id='.$order_id);
         exit();
     }
 }

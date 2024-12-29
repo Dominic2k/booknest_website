@@ -111,6 +111,30 @@ class OrderModel extends DModel {
         $data = [':user_id' => $user_id];
         return $this->db->select($sql, $data);
     }
+
+    public function getBookInOrderFromOrderId($order_id){
+        $sql = "
+            SELECT 
+                b.book_id, 
+                b.title, 
+                b.price, 
+                i.path, 
+                o.total_price, 
+                p.address_delivery,
+                p.user_note
+            FROM books b
+            JOIN order_items oi ON b.book_id = oi.book_id
+            JOIN orders o ON oi.order_id = o.order_id
+            JOIN images i ON b.book_id = i.book_id
+            JOIN payments p ON o.order_id = p.order_id
+            WHERE o.order_id = :order_id
+    ";
+
+    // Important TODO cần improve sql, hiện Join quá nhiều gây chậm query
+    
+        $data = [':order_id' => $order_id];
+        return $this->db->select($sql, $data);
+    }
     
     public function getAllBookInOrderDetails($table_orders, $user_id){
         $sql = "

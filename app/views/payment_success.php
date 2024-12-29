@@ -151,6 +151,7 @@
       <div class="order-info">
         <p class="order-info-total"><strong>Total payment:</strong> <span class="total-payment"><?= number_format($book['total_price'], 0, ',', '.') ?>đ</span></p>
         <p><strong>Delivery address:</strong> <?= $book['address_delivery']; ?></p> <!-- Assuming you have the delivery address variable -->
+        <p><strong>User note:</strong> <?= $book['user_note']; ?></p> <!-- Assuming you have the delivery address variable -->
       </div>
     </div>
     <div class="order-note">

@@ -108,7 +108,8 @@ class orderController extends DController {
     
         // Lấy thông tin đơn hàng
         $table_orders = 'orders';
-        $data['bookInOrder'] = $orderModel->getBookInOrder($table_orders, $userId);
+        $order_id = $_GET['order_id'];
+        $data['bookInOrder'] = $orderModel->getBookInOrderFromOrderId($order_id);
     
         // Kiểm tra nếu không có đơn hàng
         if (empty($data['bookInOrder'])) {
