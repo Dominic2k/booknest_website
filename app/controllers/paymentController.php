@@ -7,6 +7,7 @@ class paymentController extends DController
     }
     public function viewPayment()
     {
+        session_start();
         $book_id = isset($_GET['book_id']) ? $_GET['book_id'] : null;
         $quantity = isset($_GET['quantity']) ? $_GET['quantity'] : null;
         $data = null;
@@ -16,8 +17,17 @@ class paymentController extends DController
             $bookModel = $this->load->model('bookModel');
             $table_book = 'books';
             $book = $bookModel->getBookById($table_book, $book_id)[0];
+            $total_price_per_item = $book['price'] * $quantity;
             $data['user_cart'] = [
-                ['book' => $book, 'quantity' => $quantity]
+                [
+                    'quantity' => $quantity,
+                    "book_id" => $book['book_id'],
+                    'image_path' => $book['image_path'],
+                    'price' => $book['price'],
+                    'title' => $book['title'],
+                    'total_price' => $total_price_per_item,
+                    'total_price_per_item' => $total_price_per_item
+                ]
             ];
         } else {
             // 2. Không có 2 params trên, thì tìm user_payment
@@ -29,14 +39,6 @@ class paymentController extends DController
                 $data['user_cart'] = $cartModel->getUserCart($user_id, 'inCart');
             }
         }
-
-        //Tính tổng hoá đơn
-        $total_price = 0;
-        foreach ($data['user_cart'] as $key => $value) {
-            $book = $value['book'];
-            $total_price += $book['price'] * $value['quantity'];
-        }
-        $data['total_price'] = $total_price;
 
         $this->load->view('Payment', $data);
     }
@@ -63,17 +65,16 @@ class paymentController extends DController
             echo "Vui lòng điền đầy đủ thông tin và chọn sản phẩm!";
             exit;
         }
-
         // Tạo đơn hàng mới
         $cartModel = $this->load->model('cartModel');
         $orderModel = $this->load->model('orderModel');
         $user_id = $_SESSION['current_user']['user_id'];
         $table_orders = 'orders';
         // Kiểm tra lại loại thanh toán
-        $status = 'pending'; 
-        if ($payment_method == 'credit') {
-            $status = 'complete'; 
-        } 
+        $status = 'pending';
+        if ($payment_method == 'bank transfer') {
+            $status = 'complete';
+        }
 
 
         $data = array(
