@@ -34,7 +34,6 @@ class cartController extends DController {
             $cart = $cartModel->getCartByUserIdAndStatus($user_id, 'inCart');
     
             if ($cart) {
-                // Giỏ hàng đã tồn tại
                 $order_id = $cart[0]['order_id'];
                 $table_order_items = 'order_items';
 

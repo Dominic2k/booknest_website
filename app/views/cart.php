@@ -323,20 +323,19 @@
             const decrementButton = item.querySelector(".btn-decrement");
             const incrementButton = item.querySelector(".btn-increment");
             const quantityInput = item.querySelector(".quantity-input");
-            const totalPriceElement = item.querySelector(".cart-item-total"); // Chọn phần tử hiển thị tổng giá
-            const priceElement = item.querySelector(".cart-item-price"); // Chọn phần tử hiển thị giá gốc
+            const totalPriceElement = item.querySelector(".cart-item-total");
+            const priceElement = item.querySelector(".cart-item-price");
             const bookId = item.dataset.bookId;
             const orderId = item.dataset.orderId;
 
             const formatCurrency = (amount) => {
                 return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' })
                     .format(amount)
-                    .replace("₫", "đ"); // Thay ký hiệu ₫ bằng đ
+                    .replace("₫", "đ");
             };
 
             const updateQuantity = (newQuantity) => {
-                // Cập nhật giao diện ngay lập tức
-                const price = parseFloat(priceElement.textContent.replace(/\./g, '').replace("đ", '')); // Loại bỏ định dạng cũ
+                const price = parseFloat(priceElement.textContent.replace(/\./g, '').replace("đ", ''));
                 const totalPrice = price * newQuantity;
                 totalPriceElement.textContent = formatCurrency(totalPrice); // Hiển thị định dạng mới
                 quantityInput.textContent = newQuantity; // Cập nhật số lượng hiển thị (nếu cần)
