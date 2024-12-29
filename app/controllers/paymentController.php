@@ -66,7 +66,7 @@ class paymentController extends DController
         $data['total_price'] = $totalPrice; 
     
 
-    // Xử lý thanh toán
+        // Xử lý thanh toán
         $total_Price = $totalPrice; // Tổng giá trị đơn hàng
         $bankTransferInfo = $orderModel->getBankTransferInfo($order_id, $total_Price);
         if (!$bankTransferInfo) {
