@@ -29,26 +29,14 @@ class OrderModel extends DModel {
         $data = [':order_id' => $order_id];
         return $this->db->select($sql, $data);  
     }
-
-    public function getOrderInfo($table_orders, $user_id){
-        $sql = "
-            SELECT o.order_id, o.total_price
-            FROM $table_orders o
-            WHERE o.user_id = :user_id
-            ORDER BY o.created_at DESC
-            LIMIT 1
-        ";
-        $data = [':user_id' => $user_id];
-        return $this->db->select($sql, $data);
-    }
     
-    public function getBankTransferInfo($order_id, $totalprice) {
+    public function getBankTransferInfo($orderId, $total_Price) {
         // Thông tin thanh toán
         $bankTransferInfo = [
             'bankName' => 'VIETTINBANK',
             'accountNumber' => '0312 455 602',
             'accountHolder' => 'BOOKNEST WEBSITE',
-            'amount' => $totalprice
+            'amount' => $total_Price
         ];
     
         // Tạo đường dẫn thư mục và file QR
@@ -56,7 +44,7 @@ class OrderModel extends DModel {
         if (!file_exists($qrCodesDir)) {
             mkdir($qrCodesDir, 0777, true);
         }
-        $qrFilePath = $qrCodesDir . '/payment_qr_' . $order_id . '.png';
+        $qrFilePath = $qrCodesDir . '/payment_qr_' . $orderId. '.png';
     
         // Tạo mã QR
         if (file_exists(__DIR__ . '/../../phpqrcode/qrlib.php')) {
@@ -75,7 +63,7 @@ class OrderModel extends DModel {
         }
     
         // Thêm đường dẫn file vào thông tin trả về
-        $bankTransferInfo['qrFilePath'] = '../public/qr_codes/payment_qr_' . $order_id . '.png';
+        $bankTransferInfo['qrFilePath'] = '../public/qr_codes/payment_qr_' . $orderId . '.png';
         return $bankTransferInfo;
     }
 
@@ -174,5 +162,33 @@ class OrderModel extends DModel {
 
     public function updateOrderItemQuantity($table_order_items, $data, $condition) {
         return $this->db->update($table_order_items, $data, $condition);
+    }
+
+    public function updateOrderStatusFromCart($table_orders, $data, $condition){
+        return $this->db->update($table_orders, $data,$condition);
+    }
+    public function updateOrderStatus($table_orders, $data, $condition){
+        return $this->db->update($table_orders, $data, $condition);
+    }
+
+    public function getBookPrice($table_books, $bookId){
+        $sql = "SELECT price FROM books WHERE book_id = :book_id";
+        $data = ['book_id' => $bookId];
+        return $this->db->select($sql, $data);
+    }
+
+    public function createOrder($table_orders, $data){
+        return $this->db->insert($table_orders, $data);
+    }
+    public function addOrderItem($table_order_items, $data){
+        return $this->db->insert($table_order_items, $data);
+    }
+    public function getOrderId($table_orders, $user_id){
+        $sql = "SELECT order_id FROM orders WHERE user_id = :user_id
+        ORDER BY created_at DESC
+        LIMIT 1";
+        
+        $data = ['user_id' => $user_id];
+        return $this->db->select($sql, $data);
     }
 }

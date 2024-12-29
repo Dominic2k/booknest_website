@@ -72,7 +72,7 @@
                                 <button class="btn-decrement">-</button>
                                 <span class="quantity-input" id="quantity">1</span>
                                 <button class="btn-increment">+</button>
-                            </div>
+                        </div>
                         </div>
                         <div id="quantity-message" class="quantity-message"></div>
                     </div>
