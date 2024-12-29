@@ -82,9 +82,9 @@ class paymentController extends DController
     public function buyNowCart() {
         session_start();
         $orderModel = $this->load->model('orderModel');
-        $userModel = $this->load->model('userModel');
+        // $userModel = $this->load->model('userModel');
         $cartModel = $this->load->model('cartModel');
-        $bookModel = $this->load->model('bookModel');
+        // $bookModel = $this->load->model('bookModel');
         $data = [];
 
         
@@ -108,22 +108,10 @@ class paymentController extends DController
             header('Location: /booknest_website');
             exit();
         }
-    
+        // --------------------------------------------------------------------------------------------------------------
+        // Dòng dưới này lấy id cho đúng.
         $orderID = $orderModel->getOrderID('orders', $userId);
         $order_id = $orderID[0]['order_id'];
-    
-        // Cập nhật trạng thái đơn hàng
-        $orderModel->updateOrderStatusFromCart('orders', ['status' => 'pending'], "user_id = $userId AND order_id = $order_id AND status = 'inCart'");
-        
-        $data['user_cart'] = $cartModel->getUserCartStatus($userId, 'pending');
-        if (empty($data['user_cart'])) {
-            $_SESSION['flash_message'] = [
-                'type' => 'error',
-                'message' => 'Không thể chuyển trạng thái đơn hàng!'
-            ];
-            header('Location: /booknest_website');
-            exit();
-        }
     
         // Tính tổng giá trị đơn hàng
         $totalPrice = 0;
@@ -150,7 +138,8 @@ class paymentController extends DController
         session_start();
         $orderModel = $this->load->model('orderModel');
         $userId = $_SESSION['current_user']['user_id'];
-
+        // Lấy lại order_id cho đúng
+        // -------------------------------------------------------------------------------------------------------------------
         $orderID = $orderModel->getOrderID('orders', $userId);
         $order_id = $orderID[0]['order_id'];
         
