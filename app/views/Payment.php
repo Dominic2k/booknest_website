@@ -1,7 +1,6 @@
 <?php
 // Start session nếu chưa bắt đầu
 session_start();
-
 // Kiểm tra xem người dùng đã đăng nhập chưa
 $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
 ?>
@@ -65,7 +64,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
       <main class="main-content">
         <section class="delivery-form">
           <h2 class="title-content">Delivery Information</h2>
-          <form id="paymentForm" class="paymentForm" action="/booknest_website/orderController/showPaymentInfo" method="POST">
+          <form id="paymentForm" class="paymentForm" method="POST" action="/booknest_website/paymentController/order">
             <input class="input-address" name="inputAddress" type="text" placeholder="Add new address..." required>
             <input class="input-name" name="inputName" type="text" value="<?php echo $_SESSION['current_user']['username']; ?>" placeholder="Enter your name" required>
             <input class="input-phone" name="inputPhone" type="tel" value="<?php echo $_SESSION['current_user']['phone']; ?>" placeholder="Enter your phone" required>
@@ -74,11 +73,11 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
             <h2 class="title-content">Payment Method</h2>
             <div class="payment-methods">
                 <label class="label">
-                    <input type="radio" name="paymentMethod" value="cash payment" onclick="toggleBankTransferInfo()" checked>
+                    <input type="radio" name="paymentMethod" value="cash_payment" onclick="toggleBankTransferInfo()" checked>
                     Cash On Delivery
                 </label>
                 <label class="label">
-                    <input type="radio" name="paymentMethod" value="bank transfer" onclick="toggleBankTransferInfo()">
+                    <input type="radio" name="paymentMethod" value="bank_transfer" onclick="toggleBankTransferInfo()">
                     Bank Transfer
                 </label>
             </div>
@@ -98,14 +97,13 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
 
             <?php foreach ($user_cart as $key => $item): ?>
               <div>
-                <input type="hidden" name="products[<?php echo $key; ?>][book_id]" value="<?php echo $item['book']['book_id']; ?>">
+                <input type="hidden" name="products[<?php echo $key; ?>][book_id]" value="<?php echo $item['book_id']; ?>">
                 <input type="hidden" name="products[<?php echo $key; ?>][quantity]" value="<?php echo $item['quantity']; ?>">
               </div>
             <?php endforeach; ?>
             <input type="hidden" name="total_price" value="<?php echo $total_price; ?>">
 
             <div class="btn">
-              <!-- Nút Order nằm trong form để kích hoạt gửi thông tin -->
               <button class="order-btn" type="submit">Order</button>
             </div>
           </form>
@@ -114,23 +112,28 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
         <section class="order-summary">
           <ul class="items-list">
             <?php
-            foreach ($user_cart as $key => $value) {
-              $book = $value['book']
+            $displayed_books = []; 
+            foreach ($user_cart as $key => $book) {
+                if (in_array($book['title'], $displayed_books)) {
+                    continue;
+                }
+                $displayed_books[] = $book['title'];
             ?>
-              <li>
-                <img src="../public/img/<?php echo $book['image_path']; ?>" alt="Glow Cream" class="img-product">
-                <div class="order-detail">
-                  <div class="orderProduct-name"><?php echo $book['title'] ?></div>
-                  <div class="quantity">
-                    <input class="input_sl" id="input_sl-1" type="number" value="<?php echo $value['quantity']; ?>" min="1" readonly />
-                  </div>
-                </div>
-                <p class="price"><?php echo number_format($book['price'], 0, '', '.') . 'đ'; ?></p>
-              </li>
+                <li>
+                    <img src="../public/img/<?php echo $book['image_path']; ?>" alt="Glow Cream" class="img-product">
+                    <div class="order-detail">
+                        <div class="orderProduct-name"><?php echo $book['title']; ?></div>
+                        <div class="quantity">
+                            <input class="input_sl" id="input_sl-<?php echo $key; ?>" type="number" value="<?php echo $book['quantity']; ?>" min="1" readonly />
+                        </div>
+                    </div>
+                    <p class="price"><?php echo number_format($book['price'], 0, '', '.') . 'đ'; ?></p>
+                </li>
             <?php
             }
             ?>
-          </ul>
+        </ul>
+
           <hr>
           <div class="total-price">
             <p class="total">Total</p>
@@ -190,7 +193,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
       const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
       const bankTransferInfo = document.getElementById('bankTransferInfo');
 
-      if (selectedPaymentMethod === 'bank transfer') {
+      if (selectedPaymentMethod === 'bank_transfer') {
           bankTransferInfo.style.display = 'block';
       } else {
           bankTransferInfo.style.display = 'none';

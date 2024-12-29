@@ -57,8 +57,8 @@ class Database extends PDO {
         $updateKeys = rtrim($updateKeys, ',');
 
         $sql = "update $table set $updateKeys where $condition";
-        echo "SQL: $sql\n"; // In câu SQL ra để kiểm tra
-        print_r($data); // In dữ liệu truyền vào
+        // echo "SQL: $sql\n"; // In câu SQL ra để kiểm tra
+        // print_r($data); // In dữ liệu truyền vào
         $statement = $this->prepare($sql);
         foreach($data as $key => $value) {
             $statement->bindValue(":$key", $value);

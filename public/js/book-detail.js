@@ -60,11 +60,11 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = url;
     });
 
-    // Xử lý sự kiện khi nhấn "Buy Now"
     buyNowButton.addEventListener("click", function () {
         const quantity = parseInt(quantityInput.textContent);
-        const url = `/booknest_website/paymentController/viewPayment?book_id=${bookId}&quantity=${quantity}`;
+        const url = `/booknest_website/paymentController/buyNowDetail?book_id=${bookId}&quantity=${quantity}`;
         console.log(url);
         window.location.href = url;
     });
+   
 });
