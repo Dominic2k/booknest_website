@@ -74,20 +74,17 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
       <main class="main-content">
         <section class="delivery-form">
           <h2 class="title-content">Delivery Information</h2>
-          <form id="paymentForm" class="paymentForm" action="/booknest_website/orderController/showPaymentInfo" method="POST">
+          <form id="paymentForm" class="paymentForm" action="/booknest_website/paymentController/checkout" method="POST">
             <input class="input-address" name="inputAddress" type="text" placeholder="Add new address..." required>
             <input class="input-name" name="inputName" type="text" value="<?php echo $_SESSION['current_user']['username']; ?>" placeholder="Enter your name" required>
             <input class="input-phone" name="inputPhone" type="tel" value="<?php echo $_SESSION['current_user']['phone']; ?>" placeholder="Enter your phone" required>
+            <input class="input-phone" name="inputNote" type="text" placeholder="Enter your note to shipper" required>
 
             <h2 class="title-content">Payment Method</h2>
             <div class="payment-methods">
               <label class="label">
                 <input type="radio" name="paymentMethod" value="cash payment" onclick="toggleBankTransferInfo()" checked>
                 Cash On Delivery
-              </label>
-              <label class="label">
-                <input type="radio" name="paymentMethod" value="bank transfer" onclick="toggleBankTransferInfo()">
-                Bank Transfer
               </label>
             </div>
 
@@ -110,11 +107,12 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
                 <input type="hidden" name="products[<?php echo $key; ?>][quantity]" value="<?php echo $item['quantity']; ?>">
               </div>
             <?php endforeach; ?>
-            <input type="hidden" name="total_price" value="<?php echo $total_price; ?>">
+            <input type="hidden" name="order_id" value="<?php echo isset($_GET['order_id']) ? $_GET['order_id'] : null; ?>">
+            <input type="hidden" name="total_price" value="<?php echo $user_cart[0]['total_price']; ?>">
 
             <div class="btn">
               <!-- Nút Order nằm trong form để kích hoạt gửi thông tin -->
-              <a href="<?php echo BASE_URL; ?>orderController/showBookOrder" class="order-btn" type="submit">Order</a>
+              <button class="order-btn" type="submit">Order</button>
             </div>
           </form>
         </section>

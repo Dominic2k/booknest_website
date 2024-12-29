@@ -269,7 +269,7 @@
             <div id="cart-total" style="text-align: right; font-weight: bold; margin-top: 20px;"></div>
             <div class="cart-actions">
                 <a href="<?php echo BASE_URL; ?>" class="continue-shopping-btn">Continue shopping</a>
-                <a href="<?php echo BASE_URL; ?>paymentController/viewPayment" class="continue-shopping-btn">Payment</a>
+                <a href="<?php echo BASE_URL; ?>paymentController/viewPayment?order_id=<?php echo $user_cart[0]['order_id']; ?>" class="continue-shopping-btn">Payment</a>
             </div>
         </div>
     </div>

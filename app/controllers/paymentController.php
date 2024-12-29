@@ -50,65 +50,127 @@ class paymentController extends DController
     public function checkout()
     {
         session_start();
+        // Lấy order_id từ form nếu có
+        $order_id = $_POST['order_id'] ?? null;
         // Lấy toàn bộ form info 
-        $name = $_POST['name'] ?? '';
-        $address = $_POST['address'] ?? '';
-        $phone = $_POST['phone'] ?? '';
+        $name = $_POST['inputName'] ?? '';
+        $address = $_POST['inputAddress'] ?? '';
+        $phone = $_POST['inputPhone'] ?? '';
+        $note = $_POST['inputNote'] ?? '';
         $total_price = $_POST['total_price'] ?? 0;
         $payment_method = $_POST['payment_method'] ?? 'cash';
 
-        // Lấy danh sách sản phẩm
-        $products = $_POST['products'] ?? [];
-
         // Kiểm tra dữ liệu
-        if (empty($name) || empty($address) || empty($phone) || empty($products)) {
+        if (empty($name) || empty($address) || empty($phone) || empty($note) || empty($payment_method)) {
             echo "Vui lòng điền đầy đủ thông tin và chọn sản phẩm!";
             exit;
         }
-        // Tạo đơn hàng mới
+
+
+        // Load model và các data cần thiết
         $cartModel = $this->load->model('cartModel');
         $orderModel = $this->load->model('orderModel');
         $user_id = $_SESSION['current_user']['user_id'];
         $table_orders = 'orders';
-        // Kiểm tra lại loại thanh toán
-        $status = 'pending';
-        if ($payment_method == 'bank transfer') {
-            $status = 'complete';
-        }
+        $table_payments = 'payments';
 
+        if (!empty($order_id)) {
+            // Important: Thanh toán từ cart
+            // Vì đã có order status inCart trước đó nên chỉ cần các bước sau:
+            // 1. Update status inCart thành complete
+            // 2. Lưu thông tin từ form vào bảng payments
 
-        $data = array(
-            'user_id' => $user_id,
-            'status' => $status,
-            'total_price' => $total_price
-        );
+            // Start logic
+            // 1. Update status inCart thành complete
+            $condition = "$table_orders.order_id = '$order_id'";
 
-        $newOrderId = $cartModel->createNewCart($table_orders, $data);
-        if ($newOrderId) {
-            $table_order_items = 'order_items';
-            //Tạo orderItem
-            foreach ($products as $product) {
-                $book_id = $product['book_id'];
-                $quantity = $product['quantity'];
+            $data = array(
+                'status' => 'complete'
+            );
+            $orderModel->updateOrderSummary($table_orders, $data, $condition);
 
-                $data = array(
-                    'order_id' => $newOrderId,
-                    'book_id' => $book_id,
-                    'quantity' => $quantity
-                );
-                $result = $orderModel->insertBookIntoOrderItems($table_order_items, $data);
-                if (!$result) {
-                    $_SESSION['flash_message'] = [
-                        'type' => 'error',
-                        'message' => 'Không thể thêm sản phẩm vào đơn hàng mới!'
-                    ];
-                }
+            // 2. Lưu thông tin từ form vào bảng payments
+            $data_payment = array(
+                'order_id' => $order_id,
+                'payment_method' => $payment_method,
+                'address_delivery' => $address,
+                'user_note' => $note,
+            );
+            $result_payment = $orderModel->insertPayment($table_payments, $data_payment);
+            if (!$result_payment) {
+                $_SESSION['flash_message'] = [
+                    'type' => 'error',
+                    'message' => 'Không thể lưu thông tin đơn hàng!'
+                ];
             }
         } else {
-            $_SESSION['flash_message'] = [
-                'type' => 'error',
-                'message' => 'Không thể tạo đơn hàng mới!'
+            // Important: Buy now
+            // Vì buy now không có tạo order trước nên các bước như sau
+            // 1. Tạo order
+            // 2. Tạo order_item (chính là sản phẩm được buy now)
+            // 3. Lưu thông tin từ form vào bảng payments
+
+            // Start logic
+            // Lấy danh sách sản phẩm
+            $products = $_POST['products'] ?? [];
+
+            // TODO: Do chỉ có 1 payment method nên không kiểm tra lại loại thanh toán
+            // $status = 'pending';
+            // if ($payment_method == 'bank transfer') {
+            //     $status = 'complete';
+            // }
+
+            // 1. Tạo order
+            $data = [
+                'user_id' => $user_id,
+                'status' => 'complete',
+                'total_price' => $total_price
             ];
+            $newOrderId = $cartModel->createNewCart($table_orders, $data);
+            if ($newOrderId) {
+                // set biến toàn cục $order_id để phục vụ chuyển trang sang paymentSuccess
+                $order_id = $newOrderId;
+
+                // 2. Tạo order_item (chính là sản phẩm được buy now)
+                $table_order_items = 'order_items';
+                foreach ($products as $product) {
+                    $book_id = $product['book_id'];
+                    $quantity = $product['quantity'];
+
+                    $data = array(
+                        'order_id' => $newOrderId,
+                        'book_id' => $book_id,
+                        'quantity' => $quantity
+                    );
+                    $result = $orderModel->insertBookIntoOrderItems($table_order_items, $data);
+                    if (!$result) {
+                        $_SESSION['flash_message'] = [
+                            'type' => 'error',
+                            'message' => 'Không thể thêm sản phẩm vào đơn hàng mới!'
+                        ];
+                    }
+                }
+
+                // 3. Lưu thông tin từ form vào bảng payments
+                $data_payment = [
+                    'order_id' => $order_id,
+                    'payment_method' => $payment_method,
+                    'address_delivery' => $address,
+                    'user_note' => $note,
+                ];
+                $result_payment = $orderModel->insertPayment($table_payments, $data_payment);
+                if (!$result_payment) {
+                    $_SESSION['flash_message'] = [
+                        'type' => 'error',
+                        'message' => 'Không thể lưu thông tin đơn hàng!'
+                    ];
+                }
+            } else {
+                $_SESSION['flash_message'] = [
+                    'type' => 'error',
+                    'message' => 'Không thể tạo đơn hàng mới!'
+                ];
+            }
         }
 
         // Lưu thành công thì Chuyển hướng trang đến payment success
