@@ -1,6 +1,6 @@
 <?php
 
-class bookController extends DController {
+class BookController extends DController {
     public function __construct() {
         parent::__construct();
     }
@@ -23,6 +23,5 @@ class bookController extends DController {
     public function updateBook(){
 
     }
-
 
 }
