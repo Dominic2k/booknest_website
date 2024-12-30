@@ -71,7 +71,7 @@ class OrderModel extends DModel {
         return $this->db->insert($table_payments, $paymentData);
     }
     
-    public function getBookInOrder($tables_orders, $user_id){
+    public function getBookInOrder($tables_orders, $order_id){
         $sql = "
             SELECT 
                 b.book_id, 
@@ -85,22 +85,15 @@ class OrderModel extends DModel {
             JOIN orders o ON oi.order_id = o.order_id
             JOIN images i ON b.book_id = i.book_id
             JOIN payments p ON o.order_id = p.order_id
-            WHERE o.order_id = (
-                SELECT order_id
-                FROM orders
-                WHERE user_id = :user_id
-                AND status IN ('pending', 'complete')
-                ORDER BY created_at DESC
-                LIMIT 1
-            )
+            WHERE o.order_id = :order_id
             ORDER BY oi.order_item_id
     ";
     
-        $data = [':user_id' => $user_id];
+        $data = [':order_id' => $order_id];
         return $this->db->select($sql, $data);
     }
     
-    public function getAllBookInOrderDetails($table_orders, $user_id){
+    public function getAllBookInOrderDetails($table_orders, $order_id){
         $sql = "
             SELECT 
                 i.path,
@@ -111,22 +104,15 @@ class OrderModel extends DModel {
             JOIN `order_items` oi ON o.order_id = oi.order_id
             JOIN books b ON b.book_id = oi.book_id
             JOIN images i ON i.book_id = b.book_id
-            WHERE o.order_id = (
-                SELECT order_id
-                FROM orders
-                WHERE user_id = :user_id
-                AND status IN ('pending', 'complete')
-                ORDER BY created_at DESC
-                LIMIT 1
-            )
+            WHERE o.order_id = :order_id
             ORDER BY oi.order_item_id
             ";
 
-        $data = [':user_id' => $user_id];
+        $data = [':order_id' => $order_id];
         return $this->db->select($sql, $data);
     }
 
-    public function getInfoCustomer($table_orders, $user_id){
+    public function getInfoCustomer($table_orders, $order_id){
         $sql = "
             SELECT 
                 o.total_price,
@@ -136,17 +122,10 @@ class OrderModel extends DModel {
             FROM orders o
             JOIN users u ON o.user_id = u.user_id
             JOIN payments p ON o.order_id = p.order_id
-            WHERE o.order_id = (
-                SELECT order_id 
-                FROM orders 
-                WHERE user_id = :user_id
-                AND status IN ('pending','complete')
-                ORDER BY created_at DESC
-                LIMIT 1
-            )
+            WHERE o.order_id = :order_id
         ";
 
-        $data = [':user_id' => $user_id];
+        $data = [':order_id' => $order_id];
         return $this->db->select($sql, $data);
     }
     
@@ -172,7 +151,7 @@ class OrderModel extends DModel {
     }
 
     public function getBookPrice($table_books, $bookId){
-        $sql = "SELECT price FROM books WHERE book_id = :book_id";
+        $sql = "SELECT price FROM $table_books WHERE book_id = :book_id";
         $data = ['book_id' => $bookId];
         return $this->db->select($sql, $data);
     }
@@ -184,10 +163,15 @@ class OrderModel extends DModel {
         return $this->db->insert($table_order_items, $data);
     }
     public function getOrderId($table_orders, $user_id){
-        $sql = "SELECT order_id FROM orders WHERE user_id = :user_id
+        $sql = "SELECT order_id FROM $table_orders WHERE user_id = :user_id
         ORDER BY created_at DESC
         LIMIT 1";
         
+        $data = ['user_id' => $user_id];
+        return $this->db->select($sql, $data);
+    }
+    public function getOrderIdInCart($table_orders, $user_id){
+        $sql = "SELECT order_id FROM $table_orders WHERE user_id = :user_id AND status = 'inCart'";
         $data = ['user_id' => $user_id];
         return $this->db->select($sql, $data);
     }

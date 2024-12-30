@@ -139,7 +139,16 @@
     </div>
     <div class="order-details">
       <!-- Loop through the books in the order -->
-      <?php foreach ($bookInOrder as $book): ?>
+     
+
+    <?php
+        $displayed_books = []; 
+        foreach ($bookInOrder as $key => $book) {
+            if (in_array($book['title'], $displayed_books)) {
+                continue;
+            }
+            $displayed_books[] = $book['title'];
+        ?>
       <div class="book-info">
         <img src="../public/img/<?= $book['path']; ?>" alt="Book Cover" class="book-image">
         <div class="book-title-price">
@@ -147,7 +156,9 @@
           <p class="book-price"><?= number_format($book['price'], 0, ',', '.') ?>đ</p>
         </div>
       </div>
-      <?php endforeach; ?>
+      <?php
+            }
+            ?>
       <div class="order-info">
         <p class="order-info-total"><strong>Total payment:</strong> <span class="total-payment"><?= number_format($book['total_price'], 0, ',', '.') ?>đ</span></p>
         <p><strong>Delivery address:</strong> <?= $book['address_delivery']; ?></p> <!-- Assuming you have the delivery address variable -->
