@@ -27,14 +27,12 @@ class adminController extends DController {
                 echo "Invalid email format.";
                 exit();
             }
-            
-            // Validate phone number (10 or 11 digits)
+
             if (!preg_match('/^\d{10,11}$/', $userPhone)) {
                 echo "Phone number must be 10 or 11 digits.";
                 exit();
             }
             
-            // Validate role (only '1' or '2')
             if (!in_array($userRole, ['1', '2'])) {
                 echo "Role must be '1' or '2'.";
                 exit();
@@ -58,13 +56,24 @@ class adminController extends DController {
 
     public function deleteUserAdmin(){
         $adminModel = $this->load->model('adminModel');
+        $userModel = $this->load->model('userModel');
         $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null; 
 
         $table_users ='users';
-        $condition = "$table_users.user_id = '$user_id'";
-        $adminModel->deleteUserAdmin($table_users, $condition, $limit=1);
+        
+        $userById = $userModel->getUserByUserid($table_users, $user_id);
 
-        header('Location: /booknest_website/adminController/loadAdmin');
-        exit();
+        if($userById && $userById['role']=='2'){
+            $condition = "$table_users.user_id = '$user_id'";
+            $adminModel->deleteUserAdmin($table_users, $condition, $limit=1);
+    
+            header('Location: /booknest_website/adminController/loadAdmin');
+            exit();
+        }
+        else{
+            echo "<script>alert('Bạn không thể xóa User có quyền quản trị!');</script>";
+            echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
+            exit();
+        }
     }
 }

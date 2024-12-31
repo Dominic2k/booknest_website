@@ -35,7 +35,7 @@ menuItems.forEach(item => {
 // -----------------------------
 function openEditModal(user) {
   const modal = document.querySelector('#form-edit-userInfo');
-  modal.classList.add('show'); // Thêm class 'show' khi mở modal
+  modal.classList.add('show');
   document.getElementById('userId').value = user.id;
   document.getElementById('username').value = user.username;
   document.getElementById('email').value = user.email;
@@ -57,7 +57,7 @@ modal.addEventListener('click', (event) => {
 });
 
 function deleteUser(userId) {
-  if (confirm(`Bạn có chắc muốn xóa người dùng với ID: ${userId}?`)) {
+  if (confirm(`Bạn có chắc chắn muốn xóa người dùng với ID: ${userId}?`)) {
       window.location.href = `/booknest_website/adminController/deleteUserAdmin?user_id=${userId}`;
   }
 }
