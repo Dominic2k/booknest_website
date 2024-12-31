@@ -6,10 +6,14 @@ class adminController extends DController {
     }
 
     public function loadAdmin() {
-        // -------------------------------------
+        // User-------------------------------------
         $userModel = $this->load->model('userModel');
         $data['allUser'] = $userModel->getAllUsers();
     // ------------------------------------------   
+
+    // Product---------------------------------------
+        $adminModel = $this->load->model('adminModel');
+        $data['allBook'] = $adminModel->getAllBooks();
 
         $this->load->view('admin',$data);
     }
@@ -77,5 +81,53 @@ class adminController extends DController {
             echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
             exit();
         }
+    }
+
+    public function updateBookAdmin(){
+        $adminModel = $this->load->model('adminModel');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $bookId = $_POST['book_id'];
+            $titleBook = $_POST['title_book'];
+            $authorBook = $_POST['author_book'];
+            $priceBook = $_POST['price_book'];
+            $descriptionBook = $_POST['description_book'];
+            $categoryBook = $_POST['category'];
+            $stockBook = $_POST['stock_book'];
+            
+            $table_books = 'books';
+            $table_categories = 'categories';
+
+            $categoryID = $adminModel->getCategoryID($table_categories, $categoryBook);
+            $category_id = $categoryID[0]['category_id'];
+            if($category_id){
+                $data=[
+                    'title' => $titleBook,
+                    'author' => $authorBook,
+                    'price' => $priceBook,
+                    'description' => $descriptionBook,
+                    'category_id' => $category_id,
+                    'stock' => $stockBook
+                ];
+                $condition = "$table_books.book_id = '$bookId'";
+                $adminModel->updateBookAdmin($table_books,$data,$condition);
+
+                echo "<script>alert('Bạn đã cập nhật thông tin của sách thành công!');</script>";
+                echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
+                exit();
+            }
+        }   
+    }
+
+    public function deleteBookAdmin(){
+        $adminModel = $this->load->model('adminModel');
+        $book_id = isset($_GET['book_id']) ? $_GET['book_id'] : null;
+
+        $table_books = 'books';
+        $condition = "$table_books.book_id = '$book_id'";
+        $adminModel->deleteBookAdmin($table_books, $condition, $limit=1);
+            
+        echo "<script>alert('Bạn đã xóa thông tin sách thành công!');</script>";
+        echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
+        exit();
     }
 }

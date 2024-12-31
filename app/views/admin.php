@@ -183,6 +183,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Image</th>
                                     <th>Title</th>
                                     <th>Author</th>
                                     <th>Price</th>
@@ -193,32 +194,43 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php 
+                                    $old_book_name = ""; 
+                                    foreach($allBook as $key => $value) { 
+                                        $new_book_name = $value['title']; 
+                                        if ($new_book_name === $old_book_name) {
+                                            continue;
+                                        }
+                                    $old_book_name = $new_book_name;
+                                ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>Pride and Prejudice</td>
-                                    <td>Jane Austen</td>
-                                    <td>120000</td>
-                                    <td>A classic novel of manners.1</td>
-                                    <td>1</td>
-                                    <td>20</td>
+                                    <td><?php echo $value['book_id']?></td>
                                     <td>
-                                        <button class="btn-edit-product">Chỉnh sửa</button>
-                                        <button class="btn-delete-product">Xóa</button>
+                                        <img class="img_book" src="../public/img/<?php echo $value['image_path'] ?>" alt="image_book">
+                                    </td>
+                                    <td><?php echo $value['title']?></td>
+                                    <td><?php echo $value['author']?></td>
+                                    <td><?php echo $value['price']?></td>
+                                    <td><?php echo $value['description']?></td>
+                                    <td><?php echo $value['category_name']?></td>
+                                    <td><?php echo $value['stock']?></td>
+                                    <td>
+                                        <button class="edit-btn" onclick="openEditBookModal({
+                                            id: <?php echo $value['book_id']; ?>,
+                                            title: '<?php echo $value['title']; ?>',
+                                            author: '<?php echo $value['author']; ?>',
+                                            price: '<?php echo $value['price']; ?>',
+                                            description: '<?php echo $value['description']; ?>',
+                                            category: '<?php echo $value['category_name']; ?>',
+                                            stock: '<?php echo $value['stock']; ?>'
+                                        })">Chỉnh Sửa</button>
+
+                                        <button class="delete-btn" onclick="deleteBook(<?php echo $value['book_id']; ?>)">Xóa</button>
                                     </td>
                                 </tr>
-                                <tr>
-                                <td>2</td>
-                                    <td>Pride and Prejudice</td>
-                                    <td>Jane Austen</td>
-                                    <td>160000</td>
-                                    <td>A classic novel of manners.1</td>
-                                    <td>1</td>
-                                    <td>20</td>
-                                    <td>
-                                        <button class="btn-edit-product">Chỉnh sửa</button>
-                                        <button class="btn-delete-product">Xóa</button>
-                                    </td>
-                                </tr>
+                                <?php
+                                    } 
+                                ?>
                             </tbody>
                         </table>
                     </div>
@@ -228,49 +240,49 @@
                 <div id="form-edit-bookInfo" class="modal hidden">
                     <div class="modal-content">
                         <h3>Edit Book Information</h3>
-                        <form id="editBookForm">
-                            <input type="hidden" id="bookId">
+                        <form id="editBookForm" method="POST" action="/booknest_website/adminController/updateBookAdmin">
+                            <input type="hidden" id="bookId" name="book_id">
 
                             <label for="titleBook">Title:</label>
-                            <input type="text" id="titleName" required>
+                            <input type="text" id="titleBook" name="title_book" required>
 
                             <label for="authorBook">Author:</label>
-                            <input type="text" id="authorBook" required>
+                            <input type="text" id="authorBook" name="author_book" required>
 
                             <label for="priceBook">Price:</label>
-                            <input type="number" id="priceBook" required>
+                            <input type="text" id="priceBook" name="price_book" required>
 
                             <label for="descriptionBook">Description:</label>
-                            <input type="text" id="descriptionBook" required>
+                            <input type="text" id="descriptionBook" name="description_book" required>
 
                             <div class="select-category">
                                 <label for="categoryBook">Category:</label>
-                                <select name="category" id="category-book" >
-                                    <option value="literature_books">1</option>
-                                    <option value="economics_books">2</option>
-                                    <option value="life_skills_books">3</option>
-                                    <option value="health_lifestyle">4</option>
-                                    <option value="children's_books">5</option>
-                                    <option value="horror_books">6</option>
-                                    <option value="newly_released_books">7</option>
+                                <select name="category" id="categoryBook" class="category-book" >
+                                    <option value="Literature books">Literature books</option>
+                                    <option value="Economics books">Economics books</option>
+                                    <option value="Life skills books">Life skills books</option>
+                                    <option value="Health & Lifestyle">Health & Lifestyle</option>
+                                    <option value="Children books">Children books</option>
+                                    <option value="Horror books">Horror books</option>
+                                    <option value="Newly released books">Newly released books</option>
                                 </select>
                             </div>
 
                             <label for="stockBook">Stock:</label>
-                            <input type="number" id="stockBook" required>
+                            <input type="number" id="stockBook" name="stock_book" required>
 
                             <div class="form-actions">
-                                <button type="button" class="btn-save-product">Lưu</button>
-                                <button type="button" class="btn-cancel-editproduct">Hủy</button>
+                                <button type="submit" class="btn-save-product">Lưu</button>
+                                <button type="button" class="btn-cancel-editproduct" onclick="closeEditBookModal()">Hủy</button>
                             </div>
                         </form>
                     </div>
                 </div>
                 <!-- ADD NEW BOOK -->
-                <div id="form-add-bookInfo" class="modal hidden">
+                <!-- <div id="form-add-bookInfo" class="modal hidden">
                     <div class="modal-content">
                         <h3>Add New Book</h3>
-                        <form id="addBookForm" acction="" method="POST">
+                        <form id="addBookForm" method="POST" action="/booknest_website/adminController/addNewBookAdmin">
                             <input type="hidden" id="bookId">
 
                             <label for="titleBook">Title:</label>
@@ -303,11 +315,11 @@
 
                             <div class="form-actions">
                                 <button type="button" class="btn-save-product">Lưu</button>
-                                <button type="button" class="btn-cancel-addproduct">Hủy</button>
+                                <button type="button" class="btn-cancel-addproduct" onclick="closeAddBookModal()">Hủy</button>
                             </div>
                         </form>
                     </div>
-                </div>
+                </div> -->
             </div>
         </main>
     </div>

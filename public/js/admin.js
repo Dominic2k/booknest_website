@@ -64,43 +64,76 @@ function deleteUser(userId) {
 
 // ------------------------------
 // Product Management
-const editmodal = document.querySelector('#form-edit-bookInfo');
-const addmodal = document.querySelector('#form-add-bookInfo');
+// const editmodal = document.querySelector('#form-edit-bookInfo');
+// const addmodal = document.querySelector('#form-add-bookInfo');
 
-const editbookButtons = document.querySelectorAll('.btn-edit-product');
-const addbookButtons = document.querySelectorAll('.btn-add-product');
+// const editbookButtons = document.querySelectorAll('.btn-edit-product');
+// const addbookButtons = document.querySelectorAll('.btn-add-product');
 
-const cancelEditButton = document.querySelector('.btn-cancel-editproduct');
-const cancelAddButton = document.querySelector('.btn-cancel-addproduct');
+// const cancelEditButton = document.querySelector('.btn-cancel-editproduct');
+// const cancelAddButton = document.querySelector('.btn-cancel-addproduct');
 
-editbookButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    editmodal.classList.add('visible');
-  });
-});
+// editbookButtons.forEach((button) => {
+//   button.addEventListener('click', () => {
+//     editmodal.classList.add('visible');
+//   });
+// });
 
-addbookButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      addmodal.classList.add('visible');
-    });
-  });
+// addbookButtons.forEach((button) => {
+//     button.addEventListener('click', () => {
+//       addmodal.classList.add('visible');
+//     });
+//   });
 
-cancelEditButton.addEventListener('click', () => {
-  editmodal.classList.remove('visible');
-});
+// cancelEditButton.addEventListener('click', () => {
+//   editmodal.classList.remove('visible');
+// });
 
-cancelAddButton.addEventListener('click', () => {
-    addmodal.classList.remove('visible'); 
-  });
+// cancelAddButton.addEventListener('click', () => {
+//     addmodal.classList.remove('visible'); 
+//   });
   
-editmodal.addEventListener('click', (event) => {
-  if (event.target === editmodal) {
-    editmodal.classList.remove('visible');
+// editmodal.addEventListener('click', (event) => {
+//   if (event.target === editmodal) {
+//     editmodal.classList.remove('visible');
+//   }
+// });
+
+// addmodal.addEventListener('click', (event) => {
+//     if (event.target === addmodal) {
+//       addmodal.classList.remove('visible');
+//     }
+//   });
+
+function openEditBookModal(book) {
+  console.log(book);
+  const editBookmodal = document.querySelector('#form-edit-bookInfo');
+  editBookmodal.classList.add('show');
+  document.getElementById('bookId').value = book.id;
+  document.getElementById('titleBook').value = book.title;
+  document.getElementById('authorBook').value = book.author;
+  document.getElementById('priceBook').value = book.price;
+  document.getElementById('descriptionBook').value = book.description;
+  document.getElementById('categoryBook').value = book.category;
+  document.getElementById('stockBook').value = book.stock;
+
+}
+
+function closeEditBookModal() {
+  const editBookmodal = document.querySelector('#form-edit-bookInfo');
+  editBookmodal.classList.remove('show');
+}
+
+const editBookmodal = document.querySelector('#form-edit-bookInfo');
+editBookmodal.addEventListener('click', (event) => {
+  if (event.target === editBookmodal) {
+    editBookmodal.classList.remove('show');
   }
 });
 
-addmodal.addEventListener('click', (event) => {
-    if (event.target === addmodal) {
-      addmodal.classList.remove('visible');
-    }
-  });
+function deleteBook(book_id) {
+  if (confirm(`Bạn có chắc chắn muốn xóa sách với ID: ${book_id}?`)) {
+      window.location.href = `/booknest_website/adminController/deleteBookAdmin?book_id=${book_id}`;
+  }
+}
+
