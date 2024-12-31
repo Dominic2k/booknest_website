@@ -48,7 +48,8 @@ class adminController extends DController {
             $condition = "$table_users.user_id = '$userId'";
             $adminModel->updateUserAdmin($table_users,$data,$condition);
 
-            header('Location: /booknest_website/adminController/loadAdmin');
+            echo "<script>alert('Bạn đã cập nhật thông tin của user thành công!');</script>";
+            echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
             exit();
         }
            
@@ -66,8 +67,9 @@ class adminController extends DController {
         if($userById && $userById['role']=='2'){
             $condition = "$table_users.user_id = '$user_id'";
             $adminModel->deleteUserAdmin($table_users, $condition, $limit=1);
-    
-            header('Location: /booknest_website/adminController/loadAdmin');
+            
+            echo "<script>alert('Bạn đã xóa user thành công!');</script>";
+            echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
             exit();
         }
         else{
