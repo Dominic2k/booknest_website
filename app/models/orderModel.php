@@ -154,8 +154,8 @@ class OrderModel extends DModel {
     public function getOrderItemByOrderIdAndBookId($order_id, $book_id) {
         $sql = "SELECT * FROM order_items WHERE order_id = :order_id AND book_id = :book_id";
 
-        $data = ['order_id' => $order_id,
-                'book_id' => $book_id];
+        $data = [':order_id' => $order_id,
+                ':book_id' => $book_id];
         return $this->db->select($sql, $data);
 
     }
@@ -188,7 +188,67 @@ class OrderModel extends DModel {
         ORDER BY created_at DESC
         LIMIT 1";
         
-        $data = ['user_id' => $user_id];
+        $data = [':user_id' => $user_id];
         return $this->db->select($sql, $data);
     }
-}
+
+    public function getAllOrders($table_orders) {
+        $sql = "SELECT o.order_id, o.user_id, u.username AS buyer_name, o.total_price, o.status, o.created_at AS order_date
+                FROM $table_orders o
+                JOIN users u 
+                ON o.user_id = u.user_id
+                WHERE o.status IN ('pending', 'complete')
+                ORDER BY o.created_at DESC;
+                ";
+        return $this->db->select($sql);
+    }
+
+    public function getOrderStatus($order_id) {
+        $sql = "select orders.status from orders where order_id = $order_id";
+        return $this->db->select($sql);
+    }
+
+    public function getOrderDetails($orderId) {
+        $sql = "SELECT b.title AS product_name, oi.quantity, b.price
+                FROM order_items oi
+                JOIN books b ON oi.book_id = b.book_id
+                WHERE oi.order_id = :order_id";
+    
+        $data = [':order_id' => $orderId];
+        return $this->db->select($sql, $data);
+    }
+
+    public function getWeeklyRevenue() {
+        $sql = "SELECT SUM(oi.quantity * b.price) AS weekly_revenue
+                FROM orders o
+                JOIN order_items oi ON o.order_id = oi.order_id
+                JOIN books b ON oi.book_id = b.book_id
+                WHERE YEARWEEK(o.created_at, 1) = YEARWEEK(CURDATE(), 1)";
+        return $this->db->select($sql);
+        // [0]['weekly_revenue'] ?? 0
+    }
+
+    public function getPendingOrders() {
+        $sql = "SELECT COUNT(*) AS pending_orders FROM orders WHERE status = 'pending'";
+        return $this->db->select($sql);
+    }
+    
+    public function getTotalBooksSold() {
+        $sql = "SELECT SUM(quantity) AS total_books_sold FROM order_items";
+        return $this->db->select($sql);
+    }
+
+    
+    public function getTopSellingBooks() {
+        $sql = "SELECT b.title, SUM(oi.quantity) AS total_sold
+                FROM order_items oi
+                JOIN books b ON oi.book_id = b.book_id
+                GROUP BY b.book_id
+                ORDER BY total_sold DESC
+                LIMIT 5";
+        return $this->db->select($sql);
+    }
+    
+    
+    
+} 

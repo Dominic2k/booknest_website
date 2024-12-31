@@ -133,7 +133,6 @@ class paymentController extends DController
     $this->load->view('Payment', $data);
     }
 
-
     public function order() {
         session_start();
         $orderModel = $this->load->model('orderModel');
@@ -184,49 +183,48 @@ class paymentController extends DController
         }
     }
     
+    public function showBookOrder() {
+    session_start();
+    $orderModel = $this->load->model('orderModel');
 
-   public function showBookOrder() {
-        session_start();
-        $orderModel = $this->load->model('orderModel');
-    
-        // Kiểm tra session người dùng
-        if (!isset($_SESSION['current_user'])) {
-            $_SESSION['flash_message'] = [
-                'type' => 'error',
-                'message' => 'Bạn chưa đăng nhập. Vui lòng đăng nhập vào hệ thống!'
-            ];
-            header('Location: /booknest_website/userController/loginForm');
-            exit();
-        }
-        $userId = $_SESSION['current_user']['user_id'];
-    
-        // Lấy thông tin đơn hàng
-        $table_orders = 'orders';
-        $data['bookInOrder'] = $orderModel->getBookInOrder($table_orders, $userId);
-    
-        // Kiểm tra nếu không có đơn hàng
-        if (empty($data['bookInOrder'])) {
-            die("Không có đơn hàng nào.");
-        }
+    // Kiểm tra session người dùng
+    if (!isset($_SESSION['current_user'])) {
+        $_SESSION['flash_message'] = [
+            'type' => 'error',
+            'message' => 'Bạn chưa đăng nhập. Vui lòng đăng nhập vào hệ thống!'
+        ];
+        header('Location: /booknest_website/userController/loginForm');
+        exit();
+    }
+    $userId = $_SESSION['current_user']['user_id'];
 
-        $bookInOrderDetails= $orderModel->getAllBookInOrderDetails($table_orders, $userId);
+    // Lấy thông tin đơn hàng
+    $table_orders = 'orders';
+    $data['bookInOrder'] = $orderModel->getBookInOrder($table_orders, $userId);
 
-        $infoCustomer = $orderModel->getInfoCustomer($table_orders, $userId);
+    // Kiểm tra nếu không có đơn hàng
+    if (empty($data['bookInOrder'])) {
+        die("Không có đơn hàng nào.");
+    }
 
-        $email = $infoCustomer[0]['email'];
-        $userName = $infoCustomer[0]['username'];
-        $totalPayment = $infoCustomer[0]['total_price'];
-        $deliveryAddress = $infoCustomer[0]['address_delivery'] ;
+    $bookInOrderDetails= $orderModel->getAllBookInOrderDetails($table_orders, $userId);
 
-        if (sendConfirmationEmail($email, $bookInOrderDetails, $userName, $totalPayment, $deliveryAddress)) {
-            echo "Check your email!";
-            // header("Location: /booknest_website");
-            // exit();
-        } else {
-            echo "Failed to send confirm.";
-        }
+    $infoCustomer = $orderModel->getInfoCustomer($table_orders, $userId);
 
-        $this->load->view('payment_success', $data);
+    $email = $infoCustomer[0]['email'];
+    $userName = $infoCustomer[0]['username'];
+    $totalPayment = $infoCustomer[0]['total_price'];
+    $deliveryAddress = $infoCustomer[0]['address_delivery'] ;
+
+    if (sendConfirmationEmail($email, $bookInOrderDetails, $userName, $totalPayment, $deliveryAddress)) {
+        echo "Check your email!";
+        // header("Location: /booknest_website");
+        // exit();
+    } else {
+        echo "Failed to send confirm.";
+    }
+
+    $this->load->view('payment_success', $data);
     }
 }
 

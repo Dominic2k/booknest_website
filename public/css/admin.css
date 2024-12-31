@@ -252,8 +252,10 @@ body {
     color: #347ab8;
 }
 
-.show-detail-order a{
+.show-detail-order i{
+    cursor: pointer;
     color: #000;
+
 }
 .delete-order a{
     color: #000;
@@ -270,16 +272,21 @@ body {
     background-color: transparent;
 }
 
+.badge.inCart {
+    color: #c45b5b;
+    border: 1px solid #a83434;
+}
 
-.badge.pending {
+
+.badge.complete {
     color: #34a853;
     border: 1px solid #34a853;
 }
-.badge.completed {
+.badge.cancel {
     color: #ea4335;
     border: 1px solid #ea4335;
 }
-.badge.inCart {
+.badge.pending {
     color: #4a90e2;
     border: 1px solid #4a90e2;
 }
@@ -340,4 +347,100 @@ body {
     position: fixed;
     top: 42px;
     left: 24px;
+}
+
+
+/* Modal */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+
+.table-modal {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.table-modal th, .table-modal td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table-modal th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* Dashboard */
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    border-radius: 10px;
+    /* animation: identifier 0.5s infinite ease; */
+}
+
+.stats div {
+    text-align: center;
+    padding: 36px;
+    font-size: 1.2em;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 1px 1px rgb(99, 99, 99);
+}
+@keyframes identifier {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.charts {
+    display: flex;
+    justify-content: center;
 }

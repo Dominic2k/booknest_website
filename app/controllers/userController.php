@@ -251,14 +251,26 @@ class userController extends DController
         $data['all_user'] = $userModel->getAllUsers();
         foreach($data['all_user'] as $value){
             if($value['username'] == $username && $value['password'] == md5($password)){
-                $_SESSION['current_user'] = $value;
-                $_SESSION['is_logged_in'] = true;
-                $_SESSION['flash_message'] = [
-                'type' => 'success',
-                'message' => 'Đăng nhập thành công!'
-                ];
-                header('Location: /booknest_website/');
-                exit();
+                if($value['role'] == 1) {
+                    $_SESSION['admin_login'] = true;
+                    $_SESSION['current_user'] = $value;
+                    $_SESSION['is_logged_in'] = true;
+                    $_SESSION['flash_message'] = [
+                    'type' => 'success',
+                    'message' => 'Đăng nhập admin thành công!'
+                    ];
+                    header('Location: /booknest_website/AdminController/loadAdmin');
+                    exit();
+                }else {
+                    $_SESSION['current_user'] = $value;
+                    $_SESSION['is_logged_in'] = true;
+                    $_SESSION['flash_message'] = [
+                    'type' => 'success',
+                    'message' => 'Đăng nhập thành công!'
+                    ];
+                    header('Location: /booknest_website/');
+                    exit();
+                }
             }
         }
         $_SESSION['flash_message'] = [
