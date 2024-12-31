@@ -32,26 +32,37 @@ menuItems.forEach(item => {
 });
 
 // User management
+// -----------------------------
+function openEditModal(user) {
+  const modal = document.querySelector('#form-edit-userInfo');
+  modal.classList.add('show'); // Thêm class 'show' khi mở modal
+  document.getElementById('userId').value = user.id;
+  document.getElementById('username').value = user.username;
+  document.getElementById('email').value = user.email;
+  document.getElementById('phone').value = user.phone;
+  document.getElementById('role').value = user.role;
+
+}
+
+function closeModal() {
+  const modal = document.querySelector('#form-edit-userInfo');
+  modal.classList.remove('show');
+}
+
 const modal = document.querySelector('#form-edit-userInfo');
-const editButtons = document.querySelectorAll('.edit-btn');
-const cancelButton = document.querySelector('.cancel-btn');
-
-editButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    modal.classList.add('visible'); 
-  });
-});
-
-cancelButton.addEventListener('click', () => {
-  modal.classList.remove('visible'); 
-});
-
 modal.addEventListener('click', (event) => {
   if (event.target === modal) {
-    modal.classList.remove('visible');
+    modal.classList.remove('show');
   }
 });
 
+function deleteUser(userId) {
+  if (confirm(`Bạn có chắc muốn xóa người dùng với ID: ${userId}?`)) {
+      window.location.href = `/booknest_website/adminController/deleteUserAdmin?user_id=${userId}`;
+  }
+}
+
+// ------------------------------
 // Product Management
 const editmodal = document.querySelector('#form-edit-bookInfo');
 const addmodal = document.querySelector('#form-add-bookInfo');

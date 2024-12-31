@@ -117,30 +117,31 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <?php
+                                foreach($allUser as $key => $value){
+                                ?>
                                 <tr>
-                                    <td>1</td>
-                                    <td>Nguyễn Văn A</td>
-                                    <td>a.nguyen@example.com</td>
-                                    <td>0377511308</td>
-                                    <td>1</td>
-                                    <td>2024/10/21</td>
+                                    <td><?php echo $value['user_id']?></td>
+                                    <td><?php echo $value['username']?></td>
+                                    <td><?php echo $value['email']?></td>
+                                    <td><?php echo $value['phone']?></td>
+                                    <td><?php echo $value['role']?></td>
+                                    <td><?php echo $value['created_at']?></td>
                                     <td>
-                                        <button class="edit-btn">Chỉnh sửa</button>
-                                        <button class="delete-btn">Xóa</button>
+                                    <button class="edit-btn" onclick="openEditModal({
+                                        id: <?php echo $value['user_id']; ?>,
+                                        username: '<?php echo $value['username']; ?>',
+                                        email: '<?php echo $value['email']; ?>',
+                                        phone: '<?php echo $value['phone']; ?>',
+                                        role: '<?php echo $value['role']; ?>'
+                                    })">Chỉnh Sửa</button>
+                                    
+                                    <button class="delete-btn" onclick="deleteUser(<?php echo $value['user_id']; ?>)">Xóa</button>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Trần Thị B</td>
-                                    <td>b.tran@example.com</td>
-                                    <td>0377511308</td>
-                                    <td>1</td>
-                                    <td>2024/10/21</td>
-                                    <td>
-                                        <button class="edit-btn">Chỉnh sửa</button>
-                                        <button class="delete-btn">Xóa</button>
-                                    </td>
-                                </tr>
+                                <?php
+                                    } 
+                                ?>
                             </tbody>
                         </table>
                     </div>
@@ -149,31 +150,31 @@
                 <div id="form-edit-userInfo" class="modal hidden">
                     <div class="modal-content">
                         <h3>User Information</h3>
-                        <form id="editUserForm">
-                            <input type="hidden" id="userId">
+                        <form id="editUserForm" method="POST" action="/booknest_website/adminController/updateUserAdmin">
+                            <input type="hidden" id="userId" name="userId">
 
                             <label for="username">Name:</label>
-                            <input type="text" id="username" required>
+                            <input type="text" id="username" name="userName" required>
 
                             <label for="email">Email:</label>
-                            <input type="email" id="email" required>
+                            <input type="text" id="email" name="userEmail" required>
 
-                            <label for="email">Phone:</label>
-                            <input type="email" id="email" required>
+                            <label for="phone">Phone:</label>
+                            <input type="text" id="phone" name="userPhone" required>
 
-                            <label for="email">Role:</label>
-                            <input type="email" id="email" required>
+                            <label for="role">Role:</label>
+                            <input type="text" id="role" name="userRole" required>
 
                             <div class="form-actions">
-                                <button type="button" class="save-btn">Lưu</button>
-                                <button type="button" class="cancel-btn">Hủy</button>
+                                <button type="submit" class="save-btn">Lưu</button>
+                                <button type="button" class="cancel-btn" onclick="closeModal()">Hủy</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
             <!-- Book Management -->
-            <div id="product-list" class="product-section" style="display:none;">
+            <div id="product-list" class="product-section">
                 <div id="view-customers">
                     <h2 class="title-section">Product Management</h2>
                     <button id="btn-add-product" class="btn-add-product">Add New Book</button>

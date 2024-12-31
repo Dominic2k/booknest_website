@@ -446,14 +446,15 @@ button:active {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    visibility: hidden;
-    opacity: 0;
+    opacity: 0; /* Ẩn khi mở */
+    visibility: hidden; /* Ẩn khi mở */
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-  
-.modal.visible {
-    visibility: visible;
-    opacity: 1;
+
+.modal.show {
+    display: flex; /* Đảm bảo modal được hiển thị */
+    opacity: 1; /* Modal sẽ hiển thị với độ mờ */
+    visibility: visible; /* Hiển thị khi mở */
 }
   
 .modal-content {
