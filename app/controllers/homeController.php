@@ -6,7 +6,9 @@ class homeController extends DController {
 
     public function index() {
         $bookModel = $this->load->model('bookModel');
+        $categoryModel = $this->load->model('categoryModel');
 
+        $table_categories = 'categories';
         $table_book = 'books';
         $category_economics_books = "Economics Books";
         $category_lifeskills_books = "Life skills books";
@@ -15,6 +17,7 @@ class homeController extends DController {
         $category_Horror_books = "Horror Books";
 
 
+        $data['categories'] = $categoryModel->getAllCategory($table_categories);
         $data['books'] = $bookModel->getAllBooks($table_book);
         $data['LiteratureBooks'] = $bookModel->getLiteratureBooks($table_book);
         $data['EconomicBooks'] = $bookModel->getBooksByCategory($table_book, $category_economics_books);

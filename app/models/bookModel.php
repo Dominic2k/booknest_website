@@ -36,6 +36,27 @@ class bookModel extends DModel {
         return $this->db->select($sql, $data);
     }
 
+    public function getBooksByCategoryId($table_books, $category_id) {
+        $sql = "
+                SELECT 
+                    $table_books.book_id,
+                    $table_books.title, 
+                    $table_books.price, 
+                    MIN(i.path) AS image_path
+                FROM
+                    $table_books
+                LEFT JOIN
+                    images as i ON $table_books.book_id = i.book_id
+                WHERE
+                    $table_books.category_id = $category_id
+                GROUP BY 
+                    $table_books.book_id, $table_books.title, $table_books.price
+                ORDER BY
+                    $table_books.stock ASC, $table_books.book_id ASC
+            ";
+        return $this->db->select($sql);
+    }
+
     public function getBestSellingBookHomepage($table_books) {
         $sql = "
         SELECT 
