@@ -6,16 +6,19 @@ class AdminController extends DController {
     }
 
     public function loadAdmin() {
-        // User-------------------------------------
-        $userModel = $this->load->model('userModel');
-        $data['allUser'] = $userModel->getAllUsers();
-    // ------------------------------------------   
-
-    // Product---------------------------------------
-        $adminModel = $this->load->model('adminModel');
-        $data['allBook'] = $adminModel->getAllBooks();
-
-        $this->load->view('admin',$data);
+      session_start();
+            if(isset($_SESSION['admin_login'])){
+                $orderModel = $this->load->model('orderModel');
+                $data['orders'] = $orderModel->getAllOrders('orders');
+                $userModel = $this->load->model('userModel');
+                $data['allUser'] = $userModel->getAllUsers();
+                $adminModel = $this->load->model('adminModel');
+                $data['allBook'] = $adminModel->getAllBooks();
+                $this->load->view('admin', $data);
+            }else {
+                header("Location: " . BASE_URL . "homeController/notfound");
+                return;
+            }
     }
 
     public function updateUserAdmin(){
