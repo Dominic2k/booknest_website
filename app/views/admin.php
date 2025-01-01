@@ -309,7 +309,7 @@
                     </div>
                 </div>
                 <!-- ADD NEW BOOK -->
-                <div id="form-add-bookInfo" class="modal hidden">
+                <div id="form-add-bookInfo" class="modal-edit hidden">
                     <div class="modal-content">
                         <h3>Add New Book</h3>
                         <form id="addBookForm" method="POST" action="/booknest_website/AdminController/addNewBookAdmin" enctype="multipart/form-data">
