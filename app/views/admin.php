@@ -150,7 +150,7 @@
                 <div id="form-edit-userInfo" class="modal hidden">
                     <div class="modal-content">
                         <h3>User Information</h3>
-                        <form id="editUserForm" method="POST" action="/booknest_website/adminController/updateUserAdmin">
+                        <form id="editUserForm" method="POST" action="/booknest_website/AdminController/updateUserAdmin">
                             <input type="hidden" id="userId" name="userId">
 
                             <label for="username">Name:</label>
@@ -177,7 +177,7 @@
             <div id="product-list" class="product-section">
                 <div id="view-customers">
                     <h2 class="title-section">Product Management</h2>
-                    <button id="btn-add-product" class="btn-add-product">Add New Book</button>
+                    <button id="btn-add-product" class="btn-add-product" onclick="openAddBookModal()">Add New Book</button>
                     <div class="product-table">
                         <table>
                             <thead>
@@ -240,8 +240,12 @@
                 <div id="form-edit-bookInfo" class="modal hidden">
                     <div class="modal-content">
                         <h3>Edit Book Information</h3>
-                        <form id="editBookForm" method="POST" action="/booknest_website/adminController/updateBookAdmin">
+                        <form id="editBookForm" method="POST" action="/booknest_website/AdminController/updateBookAdmin" enctype="multipart/form-data">
                             <input type="hidden" id="bookId" name="book_id">
+
+                             <!-- Add input for image upload -->
+                             <label for="imageBook">Upload Image:</label>
+                            <input type="file" id="imageBook" name="image" accept="image/*" required>
 
                             <label for="titleBook">Title:</label>
                             <input type="text" id="titleBook" name="title_book" required>
@@ -279,47 +283,51 @@
                     </div>
                 </div>
                 <!-- ADD NEW BOOK -->
-                <!-- <div id="form-add-bookInfo" class="modal hidden">
+                <div id="form-add-bookInfo" class="modal hidden">
                     <div class="modal-content">
                         <h3>Add New Book</h3>
-                        <form id="addBookForm" method="POST" action="/booknest_website/adminController/addNewBookAdmin">
-                            <input type="hidden" id="bookId">
+                        <form id="addBookForm" method="POST" action="/booknest_website/AdminController/addNewBookAdmin" enctype="multipart/form-data">
+                            <input type="hidden" id="bookId" name="book_id">
+
+                            <!-- Add input for image upload -->
+                            <label for="imageBook">Upload Image:</label>
+                            <input type="file" id="imageBook" name="image" accept="image/*" required>
 
                             <label for="titleBook">Title:</label>
-                            <input type="text" id="titleName" required>
+                            <input type="text" id="titleBook" name="title_book" required>
 
                             <label for="authorBook">Author:</label>
-                            <input type="text" id="authorBook" required>
+                            <input type="text" id="authorBook" name="author_book" required>
 
                             <label for="priceBook">Price:</label>
-                            <input type="number" id="priceBook" required>
+                            <input type="text" id="priceBook" name="price_book" required>
 
                             <label for="descriptionBook">Description:</label>
-                            <input type="text" id="descriptionBook" required>
+                            <input type="text" id="descriptionBook" name="description_book" required>
 
                             <div class="select-category">
                                 <label for="categoryBook">Category:</label>
-                                <select name="category" id="category-book" >
-                                    <option value="literature_books">1</option>
-                                    <option value="economics_books">2</option>
-                                    <option value="life_skills_books">3</option>
-                                    <option value="health_lifestyle">4</option>
-                                    <option value="children's_books">5</option>
-                                    <option value="horror_books">6</option>
-                                    <option value="newly_released_books">7</option>
+                                <select name="category" id="categoryBook" class="category-book" >
+                                    <option value="Literature books">Literature books</option>
+                                    <option value="Economics books">Economics books</option>
+                                    <option value="Life skills books">Life skills books</option>
+                                    <option value="Health & Lifestyle">Health & Lifestyle</option>
+                                    <option value="Children books">Children books</option>
+                                    <option value="Horror books">Horror books</option>
+                                    <option value="Newly released books">Newly released books</option>
                                 </select>
                             </div>
                            
                             <label for="stockBook">Stock:</label>
-                            <input type="number" id="stockBook" required>
+                            <input type="number" id="stockBook" name="stock_book" required>
 
                             <div class="form-actions">
-                                <button type="button" class="btn-save-product">Lưu</button>
+                                <button type="submit" class="btn-save-product">Lưu</button>
                                 <button type="button" class="btn-cancel-addproduct" onclick="closeAddBookModal()">Hủy</button>
                             </div>
                         </form>
                     </div>
-                </div> -->
+                </div> 
             </div>
         </main>
     </div>

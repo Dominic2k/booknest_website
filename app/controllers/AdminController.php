@@ -1,6 +1,6 @@
 <?php
 
-class adminController extends DController {
+class AdminController extends DController {
     public function __construct() {
         parent::__construct();
     }
@@ -53,7 +53,7 @@ class adminController extends DController {
             $adminModel->updateUserAdmin($table_users,$data,$condition);
 
             echo "<script>alert('Bạn đã cập nhật thông tin của user thành công!');</script>";
-            echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
+            echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
             exit();
         }
            
@@ -73,19 +73,20 @@ class adminController extends DController {
             $adminModel->deleteUserAdmin($table_users, $condition, $limit=1);
             
             echo "<script>alert('Bạn đã xóa user thành công!');</script>";
-            echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
+            echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
             exit();
         }
         else{
             echo "<script>alert('Bạn không thể xóa User có quyền quản trị!');</script>";
-            echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
+            echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
             exit();
         }
     }
 
     public function updateBookAdmin(){
         $adminModel = $this->load->model('adminModel');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {}
             $bookId = $_POST['book_id'];
             $titleBook = $_POST['title_book'];
             $authorBook = $_POST['author_book'];
@@ -93,27 +94,46 @@ class adminController extends DController {
             $descriptionBook = $_POST['description_book'];
             $categoryBook = $_POST['category'];
             $stockBook = $_POST['stock_book'];
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $imageTmpPath = $_FILES['image']['tmp_name'];
+                $imageName = uniqid() . '-' . basename($_FILES['image']['name']);
+                $uploadDir = 'public/img/'; 
+                $imagePath = $uploadDir . $imageName;
+                
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true); // Create the directory if it doesn't exist
+                }
             
-            $table_books = 'books';
-            $table_categories = 'categories';
+                if (move_uploaded_file($imageTmpPath, $imagePath)){
+                    $table_books = 'books';
+                    $table_categories = 'categories';
 
-            $categoryID = $adminModel->getCategoryID($table_categories, $categoryBook);
-            $category_id = $categoryID[0]['category_id'];
-            if($category_id){
-                $data=[
-                    'title' => $titleBook,
-                    'author' => $authorBook,
-                    'price' => $priceBook,
-                    'description' => $descriptionBook,
-                    'category_id' => $category_id,
-                    'stock' => $stockBook
-                ];
-                $condition = "$table_books.book_id = '$bookId'";
-                $adminModel->updateBookAdmin($table_books,$data,$condition);
+                    $categoryID = $adminModel->getCategoryID($table_categories, $categoryBook);
+                    $category_id = $categoryID[0]['category_id'];
+                    if($category_id){
+                        $data=[
+                            'title' => $titleBook,
+                            'author' => $authorBook,
+                            'price' => $priceBook,
+                            'description' => $descriptionBook,
+                            'category_id' => $category_id,
+                            'stock' => $stockBook
+                        ];
+                        $condition = "$table_books.book_id = '$bookId'";
+                        $adminModel->updateBookAdmin($table_books,$data,$condition);
 
-                echo "<script>alert('Bạn đã cập nhật thông tin của sách thành công!');</script>";
-                echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
-                exit();
+                        $table_images = 'images';
+                        $dataImage = [
+                            'path' => $imageName 
+                        ];
+                        $condition = "$table_images.book_id = '$bookId'";
+                        $adminModel->updateImage($table_images, $dataImage, $condition);
+
+                        echo "<script>alert('Bạn đã cập nhật thông tin của sách thành công!');</script>";
+                        echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
+                        exit();
+                }
             }
         }   
     }
@@ -127,7 +147,67 @@ class adminController extends DController {
         $adminModel->deleteBookAdmin($table_books, $condition, $limit=1);
             
         echo "<script>alert('Bạn đã xóa thông tin sách thành công!');</script>";
-        echo "<script>window.location.href = '/booknest_website/adminController/loadAdmin';</script>";
+        echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
         exit();
+    }
+
+    public function addNewBookAdmin(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $adminModel = $this->load->model('adminModel');
+
+            $bookId = $_POST['book_id'];
+            $titleBook = $_POST['title_book'];
+            $authorBook = $_POST['author_book'];
+            $priceBook = $_POST['price_book'];
+            $descriptionBook = $_POST['description_book'];
+            $categoryBook = $_POST['category'];
+            $stockBook = $_POST['stock_book'];
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $imageTmpPath = $_FILES['image']['tmp_name'];
+                $imageName = uniqid() . '-' . basename($_FILES['image']['name']);
+                $uploadDir = 'public/img/'; 
+                $imagePath = $uploadDir . $imageName;
+
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true); // Create the directory if it doesn't exist
+                }
+            
+                if (move_uploaded_file($imageTmpPath, $imagePath)) {
+                    $table_books = 'books';
+                    $table_categories = 'categories';
+        
+                    $categoryID = $adminModel->getCategoryID($table_categories, $categoryBook);
+                    $category_id = $categoryID[0]['category_id'];
+                    if($category_id){
+                        $data=[
+                            'title' => $titleBook,
+                            'author' => $authorBook,
+                            'price' => $priceBook,
+                            'description' => $descriptionBook,
+                            'category_id' => $category_id,
+                            'stock' => $stockBook
+                        ];
+                        $book_id = $adminModel->addNewBook($table_books, $data);
+
+                        $table_images = 'images';
+                        $dataImage = [
+                            'path' => $imageName 
+                        ];
+
+                        $adminModel->addImage($table_images, $dataImage, $book_id);
+
+                        echo "<script>alert('Bạn đã thêm sách mới thành công!');</script>";
+                        echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
+                        exit();
+
+                    }
+                } else {
+                    echo "Failed to upload the image.";
+                }
+            } else {
+                echo "No image uploaded or there was an upload error.";
+            }
+        }
     }
 }

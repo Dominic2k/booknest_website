@@ -58,53 +58,10 @@ modal.addEventListener('click', (event) => {
 
 function deleteUser(userId) {
   if (confirm(`Bạn có chắc chắn muốn xóa người dùng với ID: ${userId}?`)) {
-      window.location.href = `/booknest_website/adminController/deleteUserAdmin?user_id=${userId}`;
+      window.location.href = `/booknest_website/AdminController/deleteUserAdmin?user_id=${userId}`;
   }
 }
-
-// ------------------------------
-// Product Management
-// const editmodal = document.querySelector('#form-edit-bookInfo');
-// const addmodal = document.querySelector('#form-add-bookInfo');
-
-// const editbookButtons = document.querySelectorAll('.btn-edit-product');
-// const addbookButtons = document.querySelectorAll('.btn-add-product');
-
-// const cancelEditButton = document.querySelector('.btn-cancel-editproduct');
-// const cancelAddButton = document.querySelector('.btn-cancel-addproduct');
-
-// editbookButtons.forEach((button) => {
-//   button.addEventListener('click', () => {
-//     editmodal.classList.add('visible');
-//   });
-// });
-
-// addbookButtons.forEach((button) => {
-//     button.addEventListener('click', () => {
-//       addmodal.classList.add('visible');
-//     });
-//   });
-
-// cancelEditButton.addEventListener('click', () => {
-//   editmodal.classList.remove('visible');
-// });
-
-// cancelAddButton.addEventListener('click', () => {
-//     addmodal.classList.remove('visible'); 
-//   });
-  
-// editmodal.addEventListener('click', (event) => {
-//   if (event.target === editmodal) {
-//     editmodal.classList.remove('visible');
-//   }
-// });
-
-// addmodal.addEventListener('click', (event) => {
-//     if (event.target === addmodal) {
-//       addmodal.classList.remove('visible');
-//     }
-//   });
-
+// EDIT BOOK
 function openEditBookModal(book) {
   console.log(book);
   const editBookmodal = document.querySelector('#form-edit-bookInfo');
@@ -133,7 +90,23 @@ editBookmodal.addEventListener('click', (event) => {
 
 function deleteBook(book_id) {
   if (confirm(`Bạn có chắc chắn muốn xóa sách với ID: ${book_id}?`)) {
-      window.location.href = `/booknest_website/adminController/deleteBookAdmin?book_id=${book_id}`;
+      window.location.href = `/booknest_website/AdminController/deleteBookAdmin?book_id=${book_id}`;
   }
 }
+// ADD NEW BOOK
+function openAddBookModal() {
+  const addBookmodal = document.querySelector('#form-add-bookInfo');
+  addBookmodal.classList.add('show');
+}
 
+function closeAddBookModal() {
+  const addBookmodal = document.querySelector('#form-add-bookInfo');
+  addBookmodal.classList.remove('show');
+}
+
+const addBookmodal = document.querySelector('#form-add-bookInfo');
+addBookmodal.addEventListener('click', (event) => {
+  if (event.target === addBookmodal) {
+    addBookmodal.classList.remove('show');
+  }
+});

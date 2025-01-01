@@ -45,5 +45,31 @@ class adminModel extends DModel {
     public function deleteBookAdmin($table_books, $condition, $limit = 1){
         return $this->db->delete($table_books, $condition, $limit = 1);
     }
+
+    public function addNewBook($table_books, $data) {
+        // Thực hiện câu lệnh INSERT vào bảng books
+        $this->db->insert($table_books, $data);
+        
+        // Kiểm tra xem ID mới nhất có hợp lệ không
+        $book_id = $this->db->lastInsertId();  // Lấy ID của bản ghi mới nhất
+        
+        if ($book_id) {
+            return $book_id;  // Trả về book_id nếu thành công
+        } else {
+            // Xử lý lỗi nếu không thể lấy book_id
+            return false;
+        }
+    }
+
+    public function addImage($table_images, $data, $book_id) {
+        // Thêm book_id vào dữ liệu của hình ảnh
+        $data['book_id'] = $book_id;
     
+        // Thực hiện câu truy vấn INSERT vào bảng images
+        return $this->db->insert($table_images, $data);
+    }
+
+    public function updateImage($table_images, $dataImage, $condition){
+        return $this->db->update($table_images, $dataImage, $condition);
+    }
 }
