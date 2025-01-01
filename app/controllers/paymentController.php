@@ -76,7 +76,7 @@ class paymentController extends DController
 
     $this->load->view('Payment', $data);
     }
-
+  
     public function buyNowCart() {
         session_start();
         $orderModel = $this->load->model('orderModel');
@@ -122,7 +122,6 @@ class paymentController extends DController
 
         $this->load->view('Payment', $data);
     }
-
 
     public function order() {
         session_start();
