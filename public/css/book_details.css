@@ -32,7 +32,7 @@
 
 /* Ảnh nhỏ */
 .small-image {
-    display: flex;
+    display: inline-block;
     gap: 20px;
 }
 
@@ -40,16 +40,42 @@
     width: 80px;
     height: 100px;
     object-fit: cover;
-    cursor: pointer;
+    /* cursor: pointer; */
     border-radius: 3px;
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.small-book-image:hover {
+/* .small-book-image:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+} */
+
+.images-wrapper {
+    text-align: center; /* Căn giữa toàn bộ */
 }
+
+.large-image img {
+    height: 100%;
+    width: 100%;
+    max-width: 500px;
+    min-width: 240px;
+    margin-bottom: 20px;
+}
+
+.small-images-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.small-book-image {
+    width: 100px;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 
 /* Phần chi tiết sách */
 .title {

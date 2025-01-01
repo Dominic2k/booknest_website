@@ -114,6 +114,7 @@
 
         .search-wrapper {
             padding: 90px 60px;
+            min-height: 540px;
         }
 
         .search-container {
@@ -209,9 +210,28 @@
         }
     </style>
 </head>
-
 <body class="body-wrapper">
-    <?php include 'header.php'; ?>
+<header class="header">
+    <div class="logo-brand">
+        <img src="../public/img/image.png" alt="BookNest Logo" class="logo">
+        <h1 class="brand-name"><a href="/booknest_website/">BookNest</a></h1>
+    </div>
+    <ul class="navigation">
+        <li class="nav-link"><a href="/booknest_website/">Home</a></li>
+        <li class="nav-link active"><a href="<?php echo BASE_URL; ?>BookController/showSearch">Search</a></li>
+    </ul>
+    <div class="right-header">
+        <?php if (isset($_SESSION['is_logged_in'])): ?>
+            <div class="iconCart"><a href="<?php echo BASE_URL; ?>CartController/viewCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></a></div>
+            <div class="iconUser"><a href="<?php echo BASE_URL; ?>userController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
+            <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
+            <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>
+        <?php else: ?>
+            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/registerForm">Sign up</a></button>
+            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/loginForm">Log In</a></button>
+        <?php endif; ?>
+    </div>
+</header>
     <div class="search-wrapper">
         <div class="container">
             <main class="search-container">
@@ -233,7 +253,7 @@
                         <?php
                         foreach ($books as $key => $value) {
                         ?>
-                            <a class="book" href="/booknest_website/bookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>">
+                            <a class="book" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>">
                                 <img src="../public/img/<?php echo $value['image_path'] ?>" alt="Book Cover">
                                 <h4><?php echo $value['title']; ?></h4>
                                 <p class="book-price"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?></p>
@@ -244,7 +264,48 @@
             </main>
         </div>
     </div>
-    <?php include 'footer.php'; ?>
+    <div class="footer">
+        <div class="columns">
+            <div class="columnone">
+                <h4>SERVICES</h4>
+                <a class="link" href="#">Terms of Service</a>
+                <a class="link" href="#">Privacy Policy</a>
+                <a class="link" href="#">Contact</a>
+                <a class="link" href="#">Bookstore System</a>
+                <a class="link" href="#">Order Tracking</a>
+            </div>
+            <div class="columntwo">
+                <h4>SUPPORT</h4>
+                <a class="link" href="#">Order Guide</a>
+                <a class="link" href="#">Return and Refund Policy</a>
+                <a class="link" href="#">Shipping Policy</a>
+                <a class="link" href="#">Payment Methods</a>
+                <a class="link" href="#">Customer Policy</a>
+            </div>
+            <div class="columnthree">
+                <h4>ADDRESS</h4>
+                <br>
+                <p>Phuoc My - Son Tra - Da Nang</p>
+                <br>
+                <p>booknest_shd@gmail.com</p>
+                <br>
+                <p>0762 778 450</p>
+            </div>
+        </div>
+        <div class="footer-line"></div>
+        <div class="footer-content">
+            <div class="footer-left">
+                BookNest.com.vn © 2024. All Rights Reserved.
+            </div>
+            <div class="footer-right">
+                Follow us:
+                <img src="../public/img/facebook.png" alt="Facebook">
+                <img src="../public/img/instagram.png" alt="Instagram">
+                <img src="../public/img/twitter.png" alt="Twitter">
+                <img src="../public/img/mail.png" alt="Mail">
+            </div>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const headers = document.querySelectorAll('.sidebar h3');
@@ -261,5 +322,4 @@
     </script>
     <script src="../public/js/search.js"></script>
 </body>
-
 </html>

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function performSearch() {
         const searchTerm = searchInput.value.toLowerCase();
-        const url = `/booknest_website/searchController/showSearch?q=${searchTerm}`;
+        const url = `/booknest_website/bookController/showSearch?q=${searchTerm}`;
         window.location.replace(url);
     }
 
@@ -17,5 +17,4 @@ document.addEventListener("DOMContentLoaded", function () {
             performSearch();
         }
     });
-   
 });

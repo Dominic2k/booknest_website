@@ -37,7 +37,27 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
   <?php endif; ?>
 
   <div class="container">
-    <?php include 'header.php'; ?>
+  <header class="header">
+    <div class="logo-brand">
+        <img src="../public/img/image.png" alt="BookNest Logo" class="logo">
+        <h1 class="brand-name"><a href="/booknest_website/">BookNest</a></h1>
+    </div>
+    <ul class="navigation">
+        <li class="nav-link active"><a href="/booknest_website/">Home</a></li>
+        <li class="nav-link"><a href="<?php echo BASE_URL; ?>BookController/showSearch">Search</a></li>
+    </ul>
+    <div class="right-header">
+        <?php if (isset($_SESSION['is_logged_in'])): ?>
+            <div class="iconCart"><a href="<?php echo BASE_URL; ?>CartController/viewCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></a></div>
+            <div class="iconUser"><a href="<?php echo BASE_URL; ?>userController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
+            <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
+            <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>
+        <?php else: ?>
+            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/registerForm">Sign up</a></button>
+            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/loginForm">Log In</a></button>
+        <?php endif; ?>
+    </div>
+</header>
     <?php if (empty($user_cart) || count($user_cart) < 1): ?>
       <p>Không có sản phẩm nào trong giỏ hàng.</p>
     <?php else: ?>
@@ -45,7 +65,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
       <main class="main-content">
         <section class="delivery-form">
           <h2 class="title-content">Delivery Information</h2>
-          <form id="paymentForm" class="paymentForm" method="POST" action="/booknest_website/paymentController/order">
+          <form id="paymentForm" class="paymentForm" method="POST" action="/booknest_website/PaymentController/order">
             <input class="input-address" name="inputAddress" type="text" placeholder="Add new address..." required>
             <input class="input-name" name="inputName" type="text" value="<?php echo $_SESSION['current_user']['username']; ?>" placeholder="Enter your name" required>
             <input class="input-phone" name="inputPhone" type="tel" value="<?php echo $_SESSION['current_user']['phone']; ?>" placeholder="Enter your phone" required>
@@ -182,5 +202,4 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
     }
   </script>
 </body>
-
 </html>

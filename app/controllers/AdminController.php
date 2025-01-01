@@ -16,7 +16,7 @@ class AdminController extends DController {
                 $data['allBook'] = $adminModel->getAllBooks();
                 $this->load->view('admin', $data);
             }else {
-                header("Location: " . BASE_URL . "homeController/notfound");
+                header("Location: " . BASE_URL . "HomeController/notfound");
                 return;
             }
     }
