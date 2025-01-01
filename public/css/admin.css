@@ -146,7 +146,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 26px;
-    border-bottom: solid 1px #868686;
+    border-bottom: solid 1px #fc891e;
 }
 
 .header h1 {
@@ -419,15 +419,17 @@ button {
   
 .edit-btn {
     background-color: #6096ba; 
+    min-width: 100px;
     color: #fff;
     font-weight: bold;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 6px;
 }
   
 .delete-btn {
     background-color: #d9534f;
+    min-width: 100px;
     color: #fff;
-    margin-left: 10px;
     font-weight: bold;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -868,7 +870,7 @@ button:active {
     font-size: 1.2em;
     border: 1px solid #ddd;
     border-radius: 10px;
-    box-shadow: 1px 1px rgb(99, 99, 99);
+    box-shadow: 1px 1px rgb(255, 171, 55);
 }
 @keyframes identifier {
     from {

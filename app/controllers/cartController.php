@@ -1,5 +1,5 @@
 <?php
-class cartController extends DController {
+class CartController extends DController {
     public function __construct() {
         parent::__construct();
     }

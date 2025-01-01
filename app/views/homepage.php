@@ -7,6 +7,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,23 +22,24 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
     <!-- Header -->
-<?php
+    <?php
     require_once 'header.php';
-?>
+    ?>
     <div class="content">
         <div class="content-left">
             <div class="categories">
                 <h2 class="title-categories">Categories</h2>
                 <ul class="categories-list">
-                    <li class="categories-item">Newly released books</li>
-                    <li class="categories-item">Literature books</li>
-                    <li class="categories-item">Economics books</li>
-                    <li class="categories-item">Life skills books</li>
-                    <li class="categories-item">Health & Lifestyle</li>
-                    <li class="categories-item">Children's books</li>
-                    <li class="categories-item">Horror books</li>
+                    <?php
+                    foreach ($categories as $key => $value) {
+                    ?>
+                        <li class="categories-item">
+                            <a href="/booknest_website/CategoryController/showCategory?category_id=<?php echo $value['category_id']; ?>"><?php echo $value['name'] ?></a>
+                        </li>
+                    <?php } ?>
                 </ul>
             </div>
             <img class="poster" src="public/img/Horror-book.png" alt="horror book">
@@ -45,23 +47,23 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
                 <h2 class="title-type">Bestselling New Books</h2>
                 <div class="products-bestSeller">
                     <?php
-                    foreach($bookBestSelling as $key => $value) {
+                    foreach ($bookBestSelling as $key => $value) {
                     ?>
-                    <div class="product-item-bestSeller">
-                        <img class="image-book" src="public/img/<?php echo $value['image_path']?>" alt="image-book">
-                        <div class="name-price">
-                            <a class="name-book" href="/booknest_website/bookController/showBookDetail?book_id=<?php echo $value['book_id'] ?>"><?php echo $value['title']?></a>
-                            <p class="price-book"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?>
-                            </p>
+                        <div class="product-item-bestSeller">
+                            <img class="image-book" src="public/img/<?php echo $value['image_path'] ?>" alt="image-book">
+                            <div class="name-price">
+                                <a class="name-book" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id'] ?>"><?php echo $value['title'] ?></a>
+                                <p class="price-book"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <?php 
-                        }
+                    <?php
+                    }
                     ?>
                 </div>
             </div>
         </div>
-        
+
         <div class="content-right">
             <!-- Slider -->
             <div class="slider-container">
@@ -96,10 +98,10 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
             <div class="literature">
                 <h2 class="title-type">Literature Books</h2>
                 <div class="literature-books">
-                    <?php 
-                    $old_book_name = ""; 
-                    foreach($LiteratureBooks as $key => $value) { 
-                        $new_book_name = $value['title']; 
+                    <?php
+                    $old_book_name = "";
+                    foreach ($LiteratureBooks as $key => $value) {
+                        $new_book_name = $value['title'];
                         if ($new_book_name === $old_book_name) {
                             continue;
                         }
@@ -108,7 +110,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
                         <div class="literature-item">
                             <img class="img-book" src="public/img/<?php echo $value['image_path'] ?>" alt="img-book">
                             <div class="book-info">
-                                <a class="name-book" href="/booknest_website/bookController/showBookDetail?book_id=<?php echo $value['book_id'];?>"><?php echo $value['title'];?></a>
+                                <a class="name-book" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>"><?php echo $value['title']; ?></a>
                                 <p class="price"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?></p>
                             </div>
                         </div>
@@ -120,10 +122,10 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
             <div class="economics">
                 <h2 class="title-type">Economics Books</h2>
                 <div class="literature-books">
-                <?php 
-                    $old_book_name = ""; 
-                    foreach($EconomicBooks as $key => $value) { 
-                        $new_book_name = $value['title']; 
+                    <?php
+                    $old_book_name = "";
+                    foreach ($EconomicBooks as $key => $value) {
+                        $new_book_name = $value['title'];
                         if ($new_book_name === $old_book_name) {
                             continue;
                         }
@@ -132,7 +134,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
                         <div class="literature-item">
                             <img class="img-book" src="public/img/<?php echo $value['image_path'] ?>" alt="img-book">
                             <div class="book-info">
-                                <a class="name-book" href="/booknest_website/bookController/showBookDetail?book_id=<?php echo $value['book_id'];?>"><?php echo $value['title'];?></a>
+                                <a class="name-book" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>"><?php echo $value['title']; ?></a>
                                 <p class="price"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?></p>
                             </div>
                         </div>
@@ -143,10 +145,10 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
             <div class="life skills">
                 <h2 class="title-type">Life Skills Books</h2>
                 <div class="literature-books">
-                <?php 
-                    $old_book_name = ""; 
-                    foreach($LifeSkillsBooks as $key => $value) { 
-                        $new_book_name = $value['title']; 
+                    <?php
+                    $old_book_name = "";
+                    foreach ($LifeSkillsBooks as $key => $value) {
+                        $new_book_name = $value['title'];
                         if ($new_book_name === $old_book_name) {
                             continue;
                         }
@@ -155,21 +157,21 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
                         <div class="literature-item">
                             <img class="img-book" src="public/img/<?php echo $value['image_path'] ?>" alt="img-book">
                             <div class="book-info">
-                                <a class="name-book" href="/booknest_website/bookController/showBookDetail?book_id=<?php echo $value['book_id'];?>"><?php echo $value['title'];?></a>
+                                <a class="name-book" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>"><?php echo $value['title']; ?></a>
                                 <p class="price"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?></p>
                             </div>
                         </div>
                     <?php } ?>
-                </div>  
+                </div>
             </div>
 
             <div class="health-lifestyle">
                 <h2 class="title-type">Health & Lifestyle</h2>
                 <div class="literature-books">
-                <?php 
-                    $old_book_name = ""; 
-                    foreach($HealthLifestyle as $key => $value) { 
-                        $new_book_name = $value['title']; 
+                    <?php
+                    $old_book_name = "";
+                    foreach ($HealthLifestyle as $key => $value) {
+                        $new_book_name = $value['title'];
                         if ($new_book_name === $old_book_name) {
                             continue;
                         }
@@ -178,7 +180,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
                         <div class="literature-item">
                             <img class="img-book" src="public/img/<?php echo $value['image_path'] ?>" alt="img-book">
                             <div class="book-info">
-                                <a class="name-book" href="/booknest_website/bookController/showBookDetail?book_id=<?php echo $value['book_id'];?>"><?php echo $value['title'];?></a>
+                                <a class="name-book" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>"><?php echo $value['title']; ?></a>
                                 <p class="price"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?></p>
                             </div>
                         </div>
@@ -186,12 +188,12 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
                 </div>
             </div>
             <div class="children's">
-                <h2 class="title-type">Children's Books</h2>
+                <h2 class="title-type">Children Books</h2>
                 <div class="literature-books">
-                <?php 
-                    $old_book_name = ""; 
-                    foreach($Childrens_books as $key => $value) {
-                        $new_book_name = $value['title']; 
+                    <?php
+                    $old_book_name = "";
+                    foreach ($Childrens_books as $key => $value) {
+                        $new_book_name = $value['title'];
                         if ($new_book_name === $old_book_name) {
                             continue;
                         }
@@ -200,7 +202,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
                         <div class="literature-item">
                             <img class="img-book" src="public/img/<?php echo $value['image_path'] ?>" alt="img-book">
                             <div class="book-info">
-                                <a class="name-book" href="/booknest_website/bookController/showBookDetail?book_id=<?php echo $value['book_id'];?>"><?php echo $value['title'];?></a>
+                                <a class="name-book" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>"><?php echo $value['title']; ?></a>
                                 <p class="price"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?></p>
                             </div>
                         </div>
@@ -211,10 +213,10 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
             <div class="horror">
                 <h2 class="title-type">Horror Books</h2>
                 <div class="literature-books">
-                <?php 
-                    $old_book_name = ""; 
-                    foreach($Horror_books as $key => $value) {
-                        $new_book_name = $value['title']; 
+                    <?php
+                    $old_book_name = "";
+                    foreach ($Horror_books as $key => $value) {
+                        $new_book_name = $value['title'];
                         if ($new_book_name === $old_book_name) {
                             continue;
                         }
@@ -223,7 +225,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
                         <div class="literature-item">
                             <img class="img-book" src="public/img/<?php echo $value['image_path'] ?>" alt="img-book">
                             <div class="book-info">
-                                <a class="name-book" href="/booknest_website/bookController/showBookDetail?book_id=<?php echo $value['book_id'];?>"><?php echo $value['title'];?></a>
+                                <a class="name-book" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>"><?php echo $value['title']; ?></a>
                                 <p class="price"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?></p>
                             </div>
                         </div>
@@ -234,84 +236,84 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
     </div>
 
     <!-- Footer -->
-<?php
+    <?php
     require_once 'footer.php';
-?>
+    ?>
 
-<script>
-    const slider = document.querySelector('.slider');
-    const sliderItems = document.querySelectorAll('.slider-item');
-    const prevButton = document.querySelector('.slider-control-prev');
-    const nextButton = document.querySelector('.slider-control-next');
-    const paginationDots = document.querySelectorAll('.slider-pagination-dot');
+    <script>
+        const slider = document.querySelector('.slider');
+        const sliderItems = document.querySelectorAll('.slider-item');
+        const prevButton = document.querySelector('.slider-control-prev');
+        const nextButton = document.querySelector('.slider-control-next');
+        const paginationDots = document.querySelectorAll('.slider-pagination-dot');
 
-    let currentIndex = 1;
-    const totalSlides = sliderItems.length;
+        let currentIndex = 1;
+        const totalSlides = sliderItems.length;
 
-    function updateSlider() {
-    slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-    paginationDots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex - 1);
-    });
-    }
+            paginationDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex - 1);
+            });
+        }
 
 
-    function nextSlide() {
-    if (currentIndex >= totalSlides - 1) {
-        currentIndex = 1;
-        slider.style.transition = 'none';
-        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-        setTimeout(() => {
-        slider.style.transition = 'transform 0.8s ease-in-out';
-        nextSlide();
-        }, 50);
-        return;
-    }
-    currentIndex++;
-    updateSlider();
-    }
+        function nextSlide() {
+            if (currentIndex >= totalSlides - 1) {
+                currentIndex = 1;
+                slider.style.transition = 'none';
+                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+                setTimeout(() => {
+                    slider.style.transition = 'transform 0.8s ease-in-out';
+                    nextSlide();
+                }, 50);
+                return;
+            }
+            currentIndex++;
+            updateSlider();
+        }
 
-    // Chuyển slide trước đó
-    function prevSlide() {
-    if (currentIndex <= 0) {
-        // Đến slide clone đầu tiên
-        currentIndex = totalSlides - 2; // Reset về slide thực cuối cùng
-        slider.style.transition = 'none'; // Tắt hiệu ứng chuyển đổi
-        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
-        setTimeout(() => {
-        slider.style.transition = 'transform 0.8s ease-in-out'; // Khôi phục hiệu ứng
-        prevSlide();
-        }, 50);
-        return;
-    }
-    currentIndex--;
-    updateSlider();
-    }
+        // Chuyển slide trước đó
+        function prevSlide() {
+            if (currentIndex <= 0) {
+                // Đến slide clone đầu tiên
+                currentIndex = totalSlides - 2; // Reset về slide thực cuối cùng
+                slider.style.transition = 'none'; // Tắt hiệu ứng chuyển đổi
+                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+                setTimeout(() => {
+                    slider.style.transition = 'transform 0.8s ease-in-out'; // Khôi phục hiệu ứng
+                    prevSlide();
+                }, 50);
+                return;
+            }
+            currentIndex--;
+            updateSlider();
+        }
 
-    // Tự động chạy slider
-    let autoSlideInterval = setInterval(nextSlide, 2000);
+        // Tự động chạy slider
+        let autoSlideInterval = setInterval(nextSlide, 2000);
 
-    // Thêm sự kiện click cho nút
-    nextButton.addEventListener('click', () => {
-    nextSlide();
-    resetAutoSlide();
-    });
+        // Thêm sự kiện click cho nút
+        nextButton.addEventListener('click', () => {
+            nextSlide();
+            resetAutoSlide();
+        });
 
-    prevButton.addEventListener('click', () => {
-    prevSlide();
-    resetAutoSlide();
-    });
+        prevButton.addEventListener('click', () => {
+            prevSlide();
+            resetAutoSlide();
+        });
 
-    // Reset thời gian chạy khi thao tác
-    function resetAutoSlide() {
-    clearInterval(autoSlideInterval);
-    autoSlideInterval = setInterval(nextSlide, 2000);
-    }
+        // Reset thời gian chạy khi thao tác
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(nextSlide, 2000);
+        }
 
-    // Khởi chạy slider
-    updateSlider();
-
-</script>
+        // Khởi chạy slider
+        updateSlider();
+    </script>
 </body>
+
 </html>

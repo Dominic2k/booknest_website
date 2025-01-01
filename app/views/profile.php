@@ -94,11 +94,11 @@
     </div>
     <ul class="navigation">
         <li class="nav-link active"><a href="/booknest_website/">Home</a></li>
-        <li class="nav-link"><a href="#">Search</a></li>
+        <li class="nav-link"><a href="/booknest_website/BookController/showSearch">Search</a></li>
     </ul>
     <div class="right-header">
         <?php if (isset($_SESSION['is_logged_in'])): ?>
-            <div class="iconCart"><a href="<?php echo BASE_URL; ?>cartController/viewCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></a></div>
+            <div class="iconCart"><a href="<?php echo BASE_URL; ?>CartController/viewCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></a></div>
             <div class="iconUser"><a href="<?php echo BASE_URL; ?>userController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
             <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
             <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>

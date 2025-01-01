@@ -14,7 +14,7 @@
     <title>BookDetails</title>
 </head>
 
-<body>
+<body>  
 <header class="header">
     <div class="logo-brand">
         <img src="../public/img/image.png" alt="BookNest Logo" class="logo">
@@ -22,17 +22,17 @@
     </div>
     <ul class="navigation">
         <li class="nav-link active"><a href="/booknest_website/">Home</a></li>
-        <li class="nav-link"><a href="#">Search</a></li>
+        <li class="nav-link"><a href="<?php echo BASE_URL; ?>BookController/showSearch">Search</a></li>
     </ul>
     <div class="right-header">
         <?php if (isset($_SESSION['is_logged_in'])): ?>
-            <div class="iconCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></div>
-            <div class="iconUser"><a href="<?php echo BASE_URL; ?>userController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
+            <div class="iconCart"><a href="<?php echo BASE_URL; ?>CartController/viewCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></a></div>
+            <div class="iconUser"><a href="<?php echo BASE_URL; ?>UserController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
             <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
-            <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>
+            <div class="sign-up"><a href="<?php echo BASE_URL; ?>UserController/logout">Log Out</a></div>
         <?php else: ?>
-            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/registerForm">Sign up</a></button>
-            <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/loginForm">Log In</a></button>
+            <button class="sign-up"><a href="<?php echo BASE_URL; ?>UserController/registerForm">Sign up</a></button>
+            <button class="sign-up"><a href="<?php echo BASE_URL; ?>UserController/loginForm">Log In</a></button>
         <?php endif; ?>
     </div>
 </header>
@@ -42,20 +42,20 @@
             <div class="images-wrapper">
                 <?php
                 $counter = 0;
-                foreach ($bookById as $key => $value) {
+                foreach ($bookById as $value) {
                     if ($counter == 0) { ?>
                         <div class="large-image">
                             <img src="../public/img/<?php echo $value['image_path']; ?>" alt="Book Cover" class="book-image">
                         </div>
-                    <?php } elseif ($counter == 1) { ?>
-                        <div class="small-image">
-                            <img src="../public/img/<?php echo $value['image_path']; ?>" alt="Small Image 1" class="small-book-image">
+                        <div class="small-images-container"> <!-- Container cho ảnh nhỏ -->
+                            <?php } elseif ($counter > 0 && $counter <= 3) { ?>
+                                <img src="../public/img/<?php echo $value['image_path']; ?>" alt="Small Image <?php echo $counter; ?>" class="small-book-image">
+                            <?php }
+                            $counter++;
+                            if ($counter > 3) break;
+                        }
+                        ?>
                         </div>
-                <?php }
-                    $counter++;
-                    if ($counter >= 2) break;
-                }
-                ?>
             </div>
             <!-- Chi tiết sách -->
             <div class="details-wrapper">
@@ -105,7 +105,7 @@
             <?php foreach ($bookHasTheSameType as $key => $value) { ?>
                 <div class="genre-book">
                     <img src="../public/img/<?php echo $value['image_path'] ?>" alt="Book 1">
-                    <a class="name-book genre-book-title" href="/booknest_website/bookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>"><?php echo $value['title']; ?></a>
+                    <a class="name-book genre-book-title" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>"><?php echo $value['title']; ?></a>
                     <div class="genre-book-price"><?php echo number_format($value['price'], 0, '', '.') . 'đ'; ?></div>
                 </div>
             <?php } ?>

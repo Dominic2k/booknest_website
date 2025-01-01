@@ -45,7 +45,7 @@
             <div id="dashboard" class="order-section">
                 <div class="header">
                     <h1>Dashboard</h1>
-                    <button onclick="window.location.href='<?php echo BASE_URL; ?>userController/logout'" id="logoutBtn" class="btn-log-out">Logout</button>
+                    <button onclick="window.location.href='<?php echo BASE_URL; ?>UserController/logout'" id="logoutBtn" class="btn-log-out">Logout</button>
                 </div>
                 <div class="dashboard">
                     <div class="stats">

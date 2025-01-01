@@ -1,7 +1,7 @@
 <?php
 require 'forgot_password.php';
 session_start();
-class userController extends DController
+class UserController extends DController
 {
     public function __construct()
     {
@@ -81,7 +81,7 @@ class userController extends DController
 
                 if (sendCodeResetPassword($email, $resetCode)) {
                     echo "Reset code sent to your email!";
-                    header("Location: /booknest_website/userController/forgotPassForm?check=2");
+                    header("Location: /booknest_website/UserController/forgotPassForm?check=2");
                     exit();
                 } else {
                     echo "Failed to send reset email.";
@@ -126,7 +126,7 @@ class userController extends DController
                             'message' => 'Thay đổi mật khẩu thất bại!'
                         ];
                     }
-                    header("Location: /booknest_website/userController/loginForm");
+                    header("Location: /booknest_website/UserController/loginForm");
                     exit();
                 } else {
                     echo "Invalid reset code.";
@@ -153,7 +153,7 @@ class userController extends DController
                 'type' => 'error',
                 'message' => 'Vui lòng điền đầy đủ thông tin!'
             ];
-            header('Location: /booknest_website/userController/registerForm');
+            header('Location: /booknest_website/UserController/registerForm');
             exit();
         }
         // Kiểm tra đúng định dạng email
@@ -162,7 +162,7 @@ class userController extends DController
                 'type' => 'error',
                 'message' => 'Email không đúng định dạng!'
             ];
-            header('Location: /booknest_website/userController/registerForm');
+            header('Location: /booknest_website/UserController/registerForm');
             exit();
         }
         // Kiểm tra độ dài mật khẩu
@@ -171,7 +171,7 @@ class userController extends DController
                 'type' => 'error',
                 'message' => 'Mật khẩu phải có ít nhất 6 ký tự!'
             ];
-            header('Location: /booknest_website/userController/registerForm');
+            header('Location: /booknest_website/UserController/registerForm');
             exit();
         }
 
@@ -183,7 +183,7 @@ class userController extends DController
                 'type' => 'error',
                 'message' => 'Email này đã tồn tại. Vui lòng dùng email khác!'
             ];
-            header('Location: /booknest_website/userController/registerForm');
+            header('Location: /booknest_website/UserController/registerForm');
             exit();
         }
 
@@ -202,14 +202,14 @@ class userController extends DController
                 'type' => 'success',
                 'message' => 'Đăng ký thành công! Vui lòng đăng nhập!'
             ];
-            header('Location: /booknest_website/userController/loginForm');
+            header('Location: /booknest_website/UserController/loginForm');
             exit();
         } else {
             $_SESSION['flash_message'] = [
                 'type' => 'error',
                 'message' => 'Đăng ký thất bại. Vui lòng thử lại!'
             ];
-            header('Location: /booknest_website/userController/registerForm');
+            header('Location: /booknest_website/UserController/registerForm');
             exit();
         }
     }
@@ -232,7 +232,7 @@ class userController extends DController
                 'type' => 'error',
                 'message' => 'Vui lòng điền đầy đủ thông tin!'
             ];
-            header('Location: /booknest_website/userController/loginForm');
+            header('Location: /booknest_website/UserController/loginForm');
             exit();
         }
 
@@ -242,7 +242,7 @@ class userController extends DController
                 'type' => 'error',
                 'message' => 'Mật khẩu phải có ít nhất 6 ký tự!'
             ];
-            header('Location: /booknest_website/userController/loginForm');
+            header('Location: /booknest_website/UserController/loginForm');
             exit();
         }
 
@@ -277,7 +277,7 @@ class userController extends DController
             'type' => 'error',
             'message' => 'Tài khoản này không tồn tại hoặc sai thông tin đăng nhập, vui lòng kiểm tra lại thông tin!'
         ];
-        header('Location: /booknest_website/userController/loginForm');
+        header('Location: /booknest_website/UserController/loginForm');
         exit();
         
     }

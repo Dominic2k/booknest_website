@@ -209,9 +209,15 @@
         gap: 16px;
         font-size: 24px;
         padding-bottom: 30px;
+        padding-left: 32px;
         
     }
-    .categories-item:hover{
+
+    .categories-item a {
+        color: #815C5C;
+        text-decoration: none;
+    }
+    .categories-item a:hover{
         color: brown;
         cursor: pointer;
     }
