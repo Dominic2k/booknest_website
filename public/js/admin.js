@@ -31,8 +31,6 @@ menuItems.forEach(item => {
     });
 });
 
-// User management
-// -----------------------------
 function openEditModal(user) {
   const modal = document.querySelector('#form-edit-userInfo');
   modal.classList.add('show');
@@ -41,7 +39,6 @@ function openEditModal(user) {
   document.getElementById('email').value = user.email;
   document.getElementById('phone').value = user.phone;
   document.getElementById('role').value = user.role;
-
 }
 
 function closeModal() {
@@ -49,10 +46,10 @@ function closeModal() {
   modal.classList.remove('show');
 }
 
-const modal = document.querySelector('#form-edit-userInfo');
-modal.addEventListener('click', (event) => {
-  if (event.target === modal) {
-    modal.classList.remove('show');
+const modalUserInfo = document.querySelector('#form-edit-userInfo');
+modalUserInfo.addEventListener('click', (event) => {
+  if (event.target === modalUserInfo) {
+    modalUserInfo.classList.remove('show');
   }
 });
 
@@ -111,11 +108,9 @@ addBookmodal.addEventListener('click', (event) => {
   }
 });
 
-// Model
-
 
 function openModal(element) {
-    const orderId = element.getAttribute('data-order-id'); // Lấy giá trị order_id
+    const orderId = element.getAttribute('data-order-id');
     const modal = document.getElementById('orderDetailModal');
     const modalTableBody = document.getElementById('modalTableBody');
 
@@ -156,14 +151,11 @@ function openModal(element) {
     modal.style.display = 'block';
 }
 
-
-// Function to close the modal
 function closeModal() {
     const modal = document.getElementById('orderDetailModal');
     modal.style.display = 'none';
 }
 
-// Close modal when clicking outside of it
 window.onclick = function(event) {
     const modal = document.getElementById('orderDetailModal');
     if (event.target === modal) {

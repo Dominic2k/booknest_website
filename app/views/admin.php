@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../public/css/admin.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="../public/css/loading.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/swqgfqe5l90l69fjhsx5hywhqrqvo5n5djj34ve5in5yflqu/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
@@ -174,7 +173,7 @@
                     </div>
                 </div>
                 <!-- Edit User Form Modal -->
-                <div id="form-edit-userInfo" class="modal hidden">
+                <div id="form-edit-userInfo" class="modal-edit hidden">
                     <div class="modal-content">
                         <h3>User Information</h3>
                         <form id="editUserForm" method="POST" action="/booknest_website/AdminController/updateUserAdmin">
@@ -201,7 +200,7 @@
                 </div>
             </div>
             <!-- Book Management -->
-            <div id="product-list" class="product-section">
+            <div id="product-list" class="product-section" style="display: none;">
                 <div id="view-customers">
                     <h2 class="title-section">Product Management</h2>
                     <button id="btn-add-product" class="btn-add-product" onclick="openAddBookModal()">Add New Book</button>
@@ -264,7 +263,7 @@
                 </div>
 
                 <!-- Edit Product Form Modal -->
-                <div id="form-edit-bookInfo" class="modal hidden">
+                <div id="form-edit-bookInfo" class="modal-edit hidden">
                     <div class="modal-content">
                         <h3>Edit Book Information</h3>
                         <form id="editBookForm" method="POST" action="/booknest_website/AdminController/updateBookAdmin" enctype="multipart/form-data">
@@ -359,6 +358,5 @@
         </main>
     </div>
 <script src="../public/js/admin.js?v=<?php echo time(); ?>"></script>
-<script src="../public/js/loading.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
