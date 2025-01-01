@@ -442,7 +442,7 @@ button:active {
 }
   
   /* Modal styles */
-.modal {
+.modal-edit {
     position: fixed;
     top: 0;
     left: 0;
@@ -458,7 +458,7 @@ button:active {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modal.show {
+.modal-edit.show {
     display: flex; /* Đảm bảo modal được hiển thị */
     opacity: 1; /* Modal sẽ hiển thị với độ mờ */
     visibility: visible; /* Hiển thị khi mở */
@@ -663,7 +663,7 @@ button:active {
 }
   
   /* Modal styles */
-.modal {
+.modal-edit {
     position: fixed;
     top: 0;
     left: 0;
@@ -679,7 +679,7 @@ button:active {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.modal.show {
+.modal-edit.show {
     display: flex; /* Đảm bảo modal được hiển thị */
     opacity: 1; /* Modal sẽ hiển thị với độ mờ */
     visibility: visible; /* Hiển thị khi mở */
@@ -787,7 +787,7 @@ button:active {
     font-size: 12px;
     padding: 8px 16px;
     }
-
+}
 
 /* Modal */
 .modal {

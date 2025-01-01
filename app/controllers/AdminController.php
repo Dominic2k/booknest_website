@@ -71,7 +71,7 @@ class AdminController extends DController {
         
         $userById = $userModel->getUserByUserid($table_users, $user_id);
 
-        if($userById && $userById['role']=='2'){
+        if($userById && $userById[0]['role'] == 2){
             $condition = "$table_users.user_id = '$user_id'";
             $adminModel->deleteUserAdmin($table_users, $condition, $limit=1);
             
