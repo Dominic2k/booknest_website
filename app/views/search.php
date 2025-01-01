@@ -117,7 +117,7 @@
         }
 
         .search-container {
-            width: 75%;
+            width: 100%;
             padding: 20px;
         }
 
@@ -202,8 +202,7 @@
             font-style: italic;
         }
 
-        #allbook,
-        li {
+        #allbook {
             font-size: 1.5rem;
             font-style: italic;
             color: #815C5C;
@@ -215,45 +214,6 @@
     <?php include 'header.php'; ?>
     <div class="search-wrapper">
         <div class="container">
-            <div class="sidebar">
-                <h3>TYPE</h3>
-                <ul>
-                    <li>Fiction</li>
-                </ul>
-                <div class="outstanding-product">
-                    <h3>Outstanding product</h3>
-                    <div class="outstanding-product-item">
-                        <img src="https://product.hstatic.net/200000845405/product/bia_1_-_con_co_hanh_phuc_khong_1__1__3022234d78b64f2da4e5bfafac709d63_medium.jpg" alt="Book Cover">
-                        <div>
-                            <span class="name">The Cursed Rabbit</span>
-                            <span class="price">124,000đ</span>
-                        </div>
-                    </div>
-                    <div class="outstanding-product-item">
-                        <img src="https://product.hstatic.net/200000845405/product/nhan-to-enzyme-thuc-hanh-tre-hoa_9a3be341d0a14fe9aee087288250eeec_medium.jpg" alt="Book Cover">
-                        <div>
-                            <span class="name">The Shadow of the Eight</span>
-                            <span class="price">207,000đ</span>
-                        </div>
-                    </div>
-                    <div class="outstanding-product-item">
-                        <img src="https://product.hstatic.net/200000845405/product/kiep-nao-ta-cung-tim-thay-nhau_e8943a334eee40769c7f4d89addf8b70_master.jpg" alt="Book Cover">
-                        <div>
-                            <span class="name">The Class with a Funeral</span>
-                            <span class="price">210,000đ</span>
-                        </div>
-                    </div>
-                    <div class="outstanding-product-item">
-                        <img src="https://product.hstatic.net/200000845405/product/1_bd18df15718c47b6a64a63c7df9ab07d_master.jpg" alt="Book Cover">
-                        <div>
-                            <span class="name">The World is Very Noisy</span>
-                            <span class="price">98,000đ</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
             <main class="search-container">
                 <div class="search-bar">
                     <input id="search-input" value="" type="text" placeholder="Search your book">
