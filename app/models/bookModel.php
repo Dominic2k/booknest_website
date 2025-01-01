@@ -7,9 +7,19 @@ class bookModel extends DModel {
     }
 
     public function getAllBooks($table_books) {
-        $sql = "
-                SELECT * from $table_books
-                ORDER BY $table_books.stock DESC
+        $sql = "SELECT 
+                    b.book_id,
+                    b.title, 
+                    b.price,
+                    b.author,
+                    b.stock,
+                    b.description,
+                    i.path AS image_path
+                FROM 
+                    $table_books b
+                LEFT JOIN 
+                    images i ON b.book_id = i.book_id
+                ORDER BY b.stock DESC
                 LIMIT 16;
             ";
         return $this->db->select($sql);
