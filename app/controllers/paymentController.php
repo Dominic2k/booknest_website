@@ -1,6 +1,6 @@
 <?php
 require 'success_payment.php';
-class paymentController extends DController
+class PaymentController extends DController
 {
     public function buyNowDetail() {
         session_start();
@@ -151,7 +151,7 @@ class paymentController extends DController
                     'type' => 'error',
                     'message' => 'Vui lòng điền đầy đủ thông tin!'
                 ];
-                header('Location: /booknest_website/paymentController/order');
+                header('Location: /booknest_website/PaymentController/order');
                 exit();
             }
 

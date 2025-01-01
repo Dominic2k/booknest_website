@@ -1,5 +1,5 @@
 <?php
-class homeController extends DController {
+class HomeController extends DController {
     public function __construct() {
         parent::__construct();
     }
@@ -13,7 +13,7 @@ class homeController extends DController {
         $category_economics_books = "Economics Books";
         $category_lifeskills_books = "Life skills books";
         $category_Health_Lifestyle_books = "Health & Lifestyle";
-        $category_Childrens_books = "Children's Books";
+        $category_Childrens_books = "Children Books";
         $category_Horror_books = "Horror Books";
 
 

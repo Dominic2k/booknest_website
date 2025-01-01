@@ -208,17 +208,17 @@
         </div>
         <ul class="navigation">
             <li class="nav-link active"><a href="/booknest_website/">Home</a></li>
-            <li class="nav-link"><a href="#">Search</a></li>
+            <li class="nav-link"><a href="<?php echo BASE_URL; ?>BookController/showSearch">Search</a></li>
         </ul>
         <div class="right-header">
             <?php if (isset($_SESSION['is_logged_in'])): ?>
-                <div class="iconCart"><a href="<?php echo BASE_URL; ?>cartController/viewCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></a></div>
-                <div class="iconUser"><a href="<?php echo BASE_URL; ?>userController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
+                <div class="iconCart"><a href="<?php echo BASE_URL; ?>CartController/viewCart"><i class="fa-solid fa-cart-shopping icon-cart"></i></a></div>
+                <div class="iconUser"><a href="<?php echo BASE_URL; ?>UserController/userProfile"><i class="fa-solid fa-user icon-user"></i></a></div>
                 <div class="username"><?php echo $_SESSION['current_user']['username'] ?></div>
-                <div class="sign-up"><a href="<?php echo BASE_URL; ?>userController/logout">Log Out</a></div>
+                <div class="sign-up"><a href="<?php echo BASE_URL; ?>UserController/logout">Log Out</a></div>
             <?php else: ?>
-                <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/registerForm">Sign up</a></button>
-                <button class="sign-up"><a href="<?php echo BASE_URL; ?>userController/loginForm">Log In</a></button>
+                <button class="sign-up"><a href="<?php echo BASE_URL; ?>UserController/registerForm">Sign up</a></button>
+                <button class="sign-up"><a href="<?php echo BASE_URL; ?>UserController/loginForm">Log In</a></button>
             <?php endif; ?>
         </div>
     </header>
@@ -260,7 +260,7 @@
                             <?php echo number_format($value['price'] * $value['quantity'], 0, ',', '.') . 'đ'; ?>
                         </td>
                         <td>
-                            <a href="<?php echo BASE_URL; ?>cartController/deleteItemFromCart?order_item_id=<?php echo $value['order_item_id'] ?>&order_id=<?php echo $value['order_id']; ?>" class="cart-item-remove">&times;</a>
+                            <a href="<?php echo BASE_URL; ?>CartController/deleteItemFromCart?order_item_id=<?php echo $value['order_item_id'] ?>&order_id=<?php echo $value['order_id']; ?>" class="cart-item-remove">&times;</a>
                         </td>
                     </tr>
                     <?php } ?>
@@ -269,7 +269,7 @@
             <div id="cart-total" style="text-align: right; font-weight: bold; margin-top: 20px;"></div>
             <div class="cart-actions">
                 <a href="<?php echo BASE_URL; ?>" class="continue-shopping-btn">Continue shopping</a>
-                <a href="<?php echo BASE_URL; ?>paymentController/buyNowCart" class="payment-btn">Payment</a>
+                <a href="<?php echo BASE_URL; ?>PaymentController/buyNowCart" class="payment-btn">Payment</a>
             </div>
         </div>
     </div>
@@ -341,7 +341,7 @@
                 quantityInput.textContent = newQuantity; // Cập nhật số lượng hiển thị (nếu cần)
 
                 // Gửi yêu cầu tới server để cập nhật database
-                fetch('/booknest_website/cartController/updateQuantity', {
+                fetch('/booknest_website/CartController/updateQuantity', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
