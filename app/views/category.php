@@ -4,7 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bookstore Layout</title>
+  <title>category</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <!-- link font chữ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../public/css/Payment.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,7 +24,8 @@
 
     .container {
       display: flex;
-      padding: 60px 80px;
+      justify-content: center;
+      padding: 90px 80px;
     }
 
     .sidebar {
@@ -63,7 +73,7 @@
     }
 
     .category-books-container {
-      margin-left: 16px;
+      margin-left: 48px;
     }
 
     .title-type {
@@ -116,6 +126,7 @@
 </head>
 
 <body>
+  <?php include 'header.php'; ?>
   <div class="container">
     <div class="sidebar">
       <h3>Categories</h3>
@@ -124,7 +135,7 @@
         foreach ($categories as $key => $value) {
         ?>
           <li <?php echo $_GET['category_id'] == $value['category_id'] ? 'class="active"' : '' ?>>
-            <a href="/booknest_website/categoryController/showCategory?category_id=<?php echo $value['category_id'];?>"><?php echo $value['name'] ?></a>
+            <a href="/booknest_website/categoryController/showCategory?category_id=<?php echo $value['category_id']; ?>"><?php echo $value['name'] ?></a>
           </li>
         <?php } ?>
       </ul>
@@ -147,6 +158,7 @@
       </div>
     </div>
   </div>
+  <?php include 'footer.php'; ?>
 </body>
 
 </html>
