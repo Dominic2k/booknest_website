@@ -14,6 +14,7 @@
             background-color: #F9F5EE;
             margin-top: 60px;
             margin-bottom: 186px;
+            min-height: 296px;
         }
 
         .cart {

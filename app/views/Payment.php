@@ -10,7 +10,7 @@ $is_logged_in = isset($_SESSION['current']) && !empty($_SESSION['current']);
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Successful Payment</title>
+  <title>Payment</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
   <!-- link font chữ -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
