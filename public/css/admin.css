@@ -349,6 +349,445 @@ body {
     left: 24px;
 }
 
+/* CSS PHẦN NỘI DUNG QUẢN LÝ CUSTOMER */
+/* General styles */
+.user-section {
+    padding: 20px;
+    background-color: #f9f5f1; 
+    color: #4d4d4d; 
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title-section{
+    margin-top: 8px;
+    margin-bottom: 20px;
+    font-size: 28px;
+    color:#815C5C
+}
+  
+  /* Table styles */
+.user-table table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #eee; 
+}
+  
+.user-table thead {
+    background-color: #fae8e0; 
+    color: #7d5a50; 
+}
+  
+.user-table th,
+.user-table td {
+    padding: 15px;
+    text-align: center; 
+    font-size: 14px;
+    color: #4d4d4d;
+}
+  
+.user-table th {
+    font-weight: bold;
+    color:#815C5C;
+    font-size: 18px;
+}
+  
+.user-table tbody tr {
+    transition: background-color 0.3s ease;
+}
+  
+.user-table tbody tr:hover {
+    background-color: #e2e2e2; 
+}
+  
+.user-table td {
+    border-bottom: 1px solid #f4e8e1;
+}
+  
+button {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+  
+.edit-btn {
+    background-color: #6096ba; 
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+  
+.delete-btn {
+    background-color: #d9534f;
+    color: #fff;
+    margin-left: 10px;
+    font-weight: bold;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+  
+button:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+  
+  /* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Màu nền tối mờ */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0; /* Ẩn khi mở */
+    visibility: hidden; /* Ẩn khi mở */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.show {
+    display: flex; /* Đảm bảo modal được hiển thị */
+    opacity: 1; /* Modal sẽ hiển thị với độ mờ */
+    visibility: visible; /* Hiển thị khi mở */
+}
+  
+.modal-content {
+    background: #f9f5f1; 
+    padding: 20px 30px;
+    width: 450px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    position: relative;
+}
+  
+.modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #7d5a50; 
+    text-align: center;
+    font-weight: bold;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #5c5c5c;
+}
+  
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd; 
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fdfdfd; 
+}
+  
+.modal-content input:focus {
+    border-color: #7d5a50; 
+    outline: none;
+    box-shadow: 0 0 4px rgba(125, 90, 80, 0.2);
+}
+  
+.form-actions {
+    display: flex;
+    justify-content: center; 
+    gap: 15px; 
+    margin-top: 20px;
+}
+  
+.save-btn,
+.cancel-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+  
+.save-btn {
+    background-color: #4caf50; 
+    color: #fff;
+}
+  
+.save-btn:hover {
+    background-color: #45a049;  
+    transform: scale(1.05);     
+}
+  
+.cancel-btn {
+    background-color: #e53935; 
+    color: #fff;
+}
+  
+.cancel-btn:hover {
+    background-color: #d32f2f; 
+    transform: scale(1.05); 
+}
+  
+  
+/* Responsive adjustments */
+@media (max-width: 768px) {
+.modal-content {
+    width: 90%;
+    padding: 15px;
+}
+
+.modal-content h3 {
+    font-size: 18px;
+}
+
+.save-btn,
+.cancel-btn {
+    font-size: 12px;
+    padding: 8px 16px;
+}
+}
+  
+/* CSS CHO PHẦN QUẢN LÝ BOOK*/
+/* General styles */
+.product-section {
+    padding: 20px;
+    background-color: #f9f5f1; 
+    color: #4d4d4d; 
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title-section{
+    margin-top: 8px;
+    margin-bottom: 20px;
+    font-size: 28px;
+    color:#815C5C
+}
+
+.btn-add-product{
+    background-color: #6096ba;
+    color: #fff;
+    margin-bottom: 10px;
+}
+  
+  /* Table styles */
+.product-table table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff; 
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #eee; 
+}
+  
+.product-table thead {
+    background-color: #fae8e0; 
+    color: #7d5a50; 
+}
+
+.product-table th,
+.product-table td {
+    padding: 15px;
+    text-align: center; 
+    font-size: 14px;
+    color: #4d4d4d;
+}
+  
+.product-table th {
+    font-weight: bold;
+    color:#815C5C;
+    font-size: 18px;
+}
+
+.product-table tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.product-table tbody tr:hover {
+    background-color: #e2e2e2;
+}
+
+.product-table td {
+    border-bottom: 1px solid #f4e8e1;
+}
+.img_book{
+    width: 50px;
+    height: 50px;
+}
+
+button {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-edit-product{
+    background-color: #6096ba;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+  
+.btn-delete-product{
+    background-color: #d9534f; 
+    color: #fff;
+    margin-left: 10px;
+    font-weight: bold;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0); 
+}
+  
+  /* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0; /* Ẩn khi mở */
+    visibility: hidden; /* Ẩn khi mở */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.show {
+    display: flex; /* Đảm bảo modal được hiển thị */
+    opacity: 1; /* Modal sẽ hiển thị với độ mờ */
+    visibility: visible; /* Hiển thị khi mở */
+}
+
+.modal-content {
+    background: #f9f5f1; 
+    padding: 20px 30px;
+    width: 450px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #7d5a50; 
+    text-align: center;
+    font-weight: bold;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #5c5c5c;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd; 
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fdfdfd; 
+}
+
+.modal-content input:focus {
+    border-color: #7d5a50; 
+    outline: none;
+    box-shadow: 0 0 4px rgba(125, 90, 80, 0.2); 
+}
+
+.select-category{
+    margin-bottom: 15px;
+}
+
+.category-book{
+    height: 32px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center; 
+    gap: 15px; 
+    margin-top: 20px;
+}
+
+.btn-save-product,
+.btn-cancel-editproduct, .btn-cancel-addproduct {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-save-product{
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.btn-save-product {
+    background-color: #45a049; 
+    transform: scale(1.05); 
+}
+
+.btn-cancel-editproduct, .btn-cancel-addproduct{
+    background-color: #e53935;
+    color: #fff;
+}
+
+.btn-cancel-editproduct, .btn-cancel-addproduct{
+    background-color: #d32f2f; 
+    transform: scale(1.05); 
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modal-content {
+    width: 90%;
+    padding: 15px;
+    }
+
+    .modal-content h3 {
+    font-size: 18px;
+    }
+
+    .btn-save-product,
+    .btn-cancel-editproduct, .btn-cancel-addproduct {
+    font-size: 12px;
+    padding: 8px 16px;
+    }
+
 
 /* Modal */
 .modal {

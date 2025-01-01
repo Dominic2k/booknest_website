@@ -10,7 +10,6 @@ class paymentController extends DController
         $bookModel = $this->load->model('bookModel');
         $data = [];
     
-        // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!isset($_SESSION['current_user'])) {
             $_SESSION['flash_message'] = [
                 'type' => 'error',
@@ -23,10 +22,9 @@ class paymentController extends DController
         $userId = $_SESSION['current_user']['user_id'];
         $data['user_info'] = $userModel->getUserByUserid('users', $userId);
     
-        // Kiểm tra xem thanh toán từ giỏ hàng hay chi tiết sách
-        $book_id = isset($_GET['book_id']) ? $_GET['book_id'] : null; // Lấy từ URL nếu thanh toán từ chi tiết sách
-        $quantity = isset($_GET['quantity']) ? (int)$_GET['quantity'] : 1; // Lấy số lượng từ URL
-            // Thanh toán từ chi tiết sách nếu có book_id trong URL
+        $book_id = isset($_GET['book_id']) ? $_GET['book_id'] : null; 
+        $quantity = isset($_GET['quantity']) ? (int)$_GET['quantity'] : 1; 
+            
         $bookPrice = $orderModel->getBookPrice('books', $book_id);
         $book_price = $bookPrice[0]['price'];
         $totalPrice = $book_price * $quantity;
@@ -58,16 +56,17 @@ class paymentController extends DController
             exit();
         }
 
-        // Tính tổng giá trị đơn hàng
         $totalPrice = 0;
+        $uniqueBooks = []; 
         foreach ($data['user_cart'] as $item) {
-            $totalPrice += $item['price'] * $item['quantity'];
+            if (!in_array($item['title'], $uniqueBooks)) {
+                $totalPrice += $item['price'] * $item['quantity'];
+                $uniqueBooks[] = $item['title']; 
+            }
         }
-        $data['total_price'] = $totalPrice; 
-    
+        $data['total_price'] = $totalPrice;
 
-    // Xử lý thanh toán
-        $total_Price = $totalPrice; // Tổng giá trị đơn hàng
+        $total_Price = $totalPrice; 
         $bankTransferInfo = $orderModel->getBankTransferInfo($order_id, $total_Price);
         if (!$bankTransferInfo) {
             die("Không lấy được thông tin thanh toán.");
@@ -75,20 +74,15 @@ class paymentController extends DController
 
         $data['bankTransferInfo'] = $bankTransferInfo;
 
-    // Trả về view thanh toán
     $this->load->view('Payment', $data);
     }
-
+  
     public function buyNowCart() {
         session_start();
         $orderModel = $this->load->model('orderModel');
-        // $userModel = $this->load->model('userModel');
         $cartModel = $this->load->model('cartModel');
-        // $bookModel = $this->load->model('bookModel');
         $data = [];
 
-        
-        // Kiểm tra xem người dùng đã đăng nhập chưa
         if (!isset($_SESSION['current_user'])) {
             $_SESSION['flash_message'] = [
                 'type' => 'error',
@@ -108,20 +102,17 @@ class paymentController extends DController
             header('Location: /booknest_website');
             exit();
         }
-        // --------------------------------------------------------------------------------------------------------------
-        // Dòng dưới này lấy id cho đúng.
-        $orderID = $orderModel->getOrderID('orders', $userId);
+        
+        $orderID = $orderModel->getOrderIdInCart('orders', $userId);
         $order_id = $orderID[0]['order_id'];
-    
-        // Tính tổng giá trị đơn hàng
+
         $totalPrice = 0;
         foreach ($data['user_cart'] as $item) {
             $totalPrice += $item['price'] * $item['quantity'];
         }
         $data['total_price'] = $totalPrice;
 
-        // Xử lý thanh toán
-        $total_Price = $totalPrice; // Tổng giá trị đơn hàng
+        $total_Price = $totalPrice; 
         $bankTransferInfo = $orderModel->getBankTransferInfo($order_id, $total_Price);
         if (!$bankTransferInfo) {
             die("Không lấy được thông tin thanh toán.");
@@ -129,19 +120,24 @@ class paymentController extends DController
 
         $data['bankTransferInfo'] = $bankTransferInfo;
 
-    // Trả về view thanh toán
-    $this->load->view('Payment', $data);
+        $this->load->view('Payment', $data);
     }
 
     public function order() {
         session_start();
         $orderModel = $this->load->model('orderModel');
         $userId = $_SESSION['current_user']['user_id'];
-        // Lấy lại order_id cho đúng
-        // -------------------------------------------------------------------------------------------------------------------
-        $orderID = $orderModel->getOrderID('orders', $userId);
-        $order_id = $orderID[0]['order_id'];
         
+        $orderID = $orderModel->getOrderIdInCart('orders', $userId);
+        if (!isset($orderID[0]['order_id'])) {
+            $orderID = $orderModel->getOrderID('orders', $userId);
+        }
+        if (isset($orderID[0]['order_id'])) {
+            $order_id = $orderID[0]['order_id'];
+            $_SESSION['order_id'] = $order_id;
+        } else {
+            $order_id = null; 
+        }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $paymentMethod = $_POST['paymentMethod'];
@@ -150,22 +146,20 @@ class paymentController extends DController
             $userPhone = $_POST['inputPhone'];
             $userNote = $_POST['inputNote'];
     
-            // Kiểm tra thông tin thanh toán
             if (!$paymentMethod || !$addressDelivery || !$userName || !$userPhone || !$userNote) {
                 $_SESSION['flash_message'] = [
                     'type' => 'error',
                     'message' => 'Vui lòng điền đầy đủ thông tin!'
                 ];
-                header('Location: /booknest_website/paymentController/processPayment');
+                header('Location: /booknest_website/paymentController/order');
                 exit();
             }
 
-            // Cập nhật trạng thái đơn hàng
             $status = ($paymentMethod == 'bank_transfer') ? 'complete' : 'pending';
             $data = ['status' => $status];
+
             $orderModel->updateOrderStatus('orders', $data, "user_id = $userId AND order_id = $order_id");
     
-            // Lưu thông tin thanh toán vào bảng payment
             $paymentData = [
                 'order_id' => $order_id,
                 'payment_method' => $paymentMethod,
@@ -173,59 +167,41 @@ class paymentController extends DController
                 'user_note' => $userNote
             ];
             $orderModel->insertPayment('payments', $paymentData);
-
-            // Nếu thanh toán bằng chuyển khoản ngân hàng, lấy thông tin ngân hàng và tạo mã QR
-
+        }
+        $table_orders = 'orders';
+        $data['bookInOrder'] = $orderModel->getBookInOrder($table_orders, $order_id);
     
-            // Chuyển hướng đến trang thành công
-            header("Location: /booknest_website/paymentController/showBookOrder");
+        if (empty($data['bookInOrder'])) {
+            $_SESSION['flash_message'] = [
+                'type' => 'error',
+                'message' => 'Không có sách trong đơn hàng.'
+            ];
+            header('Location: /booknest_website/cartController');
             exit();
         }
-    }
     
-    public function showBookOrder() {
-    session_start();
-    $orderModel = $this->load->model('orderModel');
-
-    // Kiểm tra session người dùng
-    if (!isset($_SESSION['current_user'])) {
-        $_SESSION['flash_message'] = [
-            'type' => 'error',
-            'message' => 'Bạn chưa đăng nhập. Vui lòng đăng nhập vào hệ thống!'
-        ];
-        header('Location: /booknest_website/userController/loginForm');
-        exit();
-    }
-    $userId = $_SESSION['current_user']['user_id'];
-
-    // Lấy thông tin đơn hàng
-    $table_orders = 'orders';
-    $data['bookInOrder'] = $orderModel->getBookInOrder($table_orders, $userId);
-
-    // Kiểm tra nếu không có đơn hàng
-    if (empty($data['bookInOrder'])) {
-        die("Không có đơn hàng nào.");
-    }
-
-    $bookInOrderDetails= $orderModel->getAllBookInOrderDetails($table_orders, $userId);
-
-    $infoCustomer = $orderModel->getInfoCustomer($table_orders, $userId);
-
-    $email = $infoCustomer[0]['email'];
-    $userName = $infoCustomer[0]['username'];
-    $totalPayment = $infoCustomer[0]['total_price'];
-    $deliveryAddress = $infoCustomer[0]['address_delivery'] ;
-
-    if (sendConfirmationEmail($email, $bookInOrderDetails, $userName, $totalPayment, $deliveryAddress)) {
-        echo "Check your email!";
-        // header("Location: /booknest_website");
-        // exit();
-    } else {
-        echo "Failed to send confirm.";
-    }
-
-    $this->load->view('payment_success', $data);
+        $bookInOrderDetails = $orderModel->getAllBookInOrderDetails($table_orders, $order_id);
+        $infoCustomer = $orderModel->getInfoCustomer($table_orders, $order_id);
+    
+        if (!empty($infoCustomer) && isset($infoCustomer[0])) {
+            $email = $infoCustomer[0]['email'];
+            $userName = $infoCustomer[0]['username'];
+            $totalPayment = $infoCustomer[0]['total_price'];
+            $deliveryAddress = $infoCustomer[0]['address_delivery'];
+    
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                if (sendConfirmationEmail($email, $bookInOrderDetails, $userName, $totalPayment, $deliveryAddress)) {
+                    echo "Check your email!";
+                } else {
+                    echo "Failed to send confirmation email.";
+                }
+            } else {
+                echo "Invalid email address.";
+            }
+        } else {
+            echo "Không tìm thấy thông tin khách hàng!";
+        }
+        
+        $this->load->view('payment_success', $data);
     }
 }
-
-

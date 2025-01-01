@@ -37,8 +37,8 @@
                 <ul>
                     <li><a href="#" id="homeBtn"><i class="fa-solid fa-house"></i>Dashboard</a></li>
                     <li><a href="#" id="orderListBtn"><i class="fa-solid fa-cart-shopping"></i>Orders</a></li>
-                    <li><a href="#" id=""><i class="fa-solid fa-user"></i>Users</a></li>
-                    <li><a href="#" id=""><i class="fa-solid fa-book"></i>Books</a></li>
+                    <li><a href="#" id="customerListBtn"><i class="fa-solid fa-user"></i>Users</a></li>
+                    <li><a href="#" id="productListBtn"><i class="fa-solid fa-book"></i>Books</a></li>
                 </ul>
             </nav>
         </aside>
@@ -125,6 +125,236 @@
                         </table>
                     </div>
                 </div>
+            </div>
+            <!-- User Management -->
+            <div id="customer-list" class="user-section" style="display: none;">
+                <div id="view-customers">
+                    <h2 class="title-section">User Management</h2>
+                    <div class="user-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Role</th>
+                                    <th>Start Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach($allUser as $key => $value){
+                                ?>
+                                <tr>
+                                    <td><?php echo $value['user_id']?></td>
+                                    <td><?php echo $value['username']?></td>
+                                    <td><?php echo $value['email']?></td>
+                                    <td><?php echo $value['phone']?></td>
+                                    <td><?php echo $value['role']?></td>
+                                    <td><?php echo $value['created_at']?></td>
+                                    <td>
+                                    <button class="edit-btn" onclick="openEditModal({
+                                        id: <?php echo $value['user_id']; ?>,
+                                        username: '<?php echo $value['username']; ?>',
+                                        email: '<?php echo $value['email']; ?>',
+                                        phone: '<?php echo $value['phone']; ?>',
+                                        role: '<?php echo $value['role']; ?>'
+                                    })">Chỉnh Sửa</button>
+                                    
+                                    <button class="delete-btn" onclick="deleteUser(<?php echo $value['user_id']; ?>)">Xóa</button>
+                                    </td>
+                                </tr>
+                                <?php
+                                    } 
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Edit User Form Modal -->
+                <div id="form-edit-userInfo" class="modal hidden">
+                    <div class="modal-content">
+                        <h3>User Information</h3>
+                        <form id="editUserForm" method="POST" action="/booknest_website/AdminController/updateUserAdmin">
+                            <input type="hidden" id="userId" name="userId">
+
+                            <label for="username">Name:</label>
+                            <input type="text" id="username" name="userName" required>
+
+                            <label for="email">Email:</label>
+                            <input type="text" id="email" name="userEmail" required>
+
+                            <label for="phone">Phone:</label>
+                            <input type="text" id="phone" name="userPhone" required>
+
+                            <label for="role">Role:</label>
+                            <input type="text" id="role" name="userRole" required>
+
+                            <div class="form-actions">
+                                <button type="submit" class="save-btn">Lưu</button>
+                                <button type="button" class="cancel-btn" onclick="closeModal()">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Book Management -->
+            <div id="product-list" class="product-section">
+                <div id="view-customers">
+                    <h2 class="title-section">Product Management</h2>
+                    <button id="btn-add-product" class="btn-add-product" onclick="openAddBookModal()">Add New Book</button>
+                    <div class="product-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Price</th>
+                                    <th>Description</th>
+                                    <th>CategoryID</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    $old_book_name = ""; 
+                                    foreach($allBook as $key => $value) { 
+                                        $new_book_name = $value['title']; 
+                                        if ($new_book_name === $old_book_name) {
+                                            continue;
+                                        }
+                                    $old_book_name = $new_book_name;
+                                ?>
+                                <tr>
+                                    <td><?php echo $value['book_id']?></td>
+                                    <td>
+                                        <img class="img_book" src="../public/img/<?php echo $value['image_path'] ?>" alt="image_book">
+                                    </td>
+                                    <td><?php echo $value['title']?></td>
+                                    <td><?php echo $value['author']?></td>
+                                    <td><?php echo $value['price']?></td>
+                                    <td><?php echo $value['description']?></td>
+                                    <td><?php echo $value['category_name']?></td>
+                                    <td><?php echo $value['stock']?></td>
+                                    <td>
+                                        <button class="edit-btn" onclick="openEditBookModal({
+                                            id: <?php echo $value['book_id']; ?>,
+                                            title: '<?php echo $value['title']; ?>',
+                                            author: '<?php echo $value['author']; ?>',
+                                            price: '<?php echo $value['price']; ?>',
+                                            description: '<?php echo $value['description']; ?>',
+                                            category: '<?php echo $value['category_name']; ?>',
+                                            stock: '<?php echo $value['stock']; ?>'
+                                        })">Chỉnh Sửa</button>
+
+                                        <button class="delete-btn" onclick="deleteBook(<?php echo $value['book_id']; ?>)">Xóa</button>
+                                    </td>
+                                </tr>
+                                <?php
+                                    } 
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Edit Product Form Modal -->
+                <div id="form-edit-bookInfo" class="modal hidden">
+                    <div class="modal-content">
+                        <h3>Edit Book Information</h3>
+                        <form id="editBookForm" method="POST" action="/booknest_website/AdminController/updateBookAdmin" enctype="multipart/form-data">
+                            <input type="hidden" id="bookId" name="book_id">
+
+                             <!-- Add input for image upload -->
+                             <label for="imageBook">Upload Image:</label>
+                            <input type="file" id="imageBook" name="image" accept="image/*" required>
+
+                            <label for="titleBook">Title:</label>
+                            <input type="text" id="titleBook" name="title_book" required>
+
+                            <label for="authorBook">Author:</label>
+                            <input type="text" id="authorBook" name="author_book" required>
+
+                            <label for="priceBook">Price:</label>
+                            <input type="text" id="priceBook" name="price_book" required>
+
+                            <label for="descriptionBook">Description:</label>
+                            <input type="text" id="descriptionBook" name="description_book" required>
+
+                            <div class="select-category">
+                                <label for="categoryBook">Category:</label>
+                                <select name="category" id="categoryBook" class="category-book" >
+                                    <option value="Literature books">Literature books</option>
+                                    <option value="Economics books">Economics books</option>
+                                    <option value="Life skills books">Life skills books</option>
+                                    <option value="Health & Lifestyle">Health & Lifestyle</option>
+                                    <option value="Children books">Children books</option>
+                                    <option value="Horror books">Horror books</option>
+                                    <option value="Newly released books">Newly released books</option>
+                                </select>
+                            </div>
+
+                            <label for="stockBook">Stock:</label>
+                            <input type="number" id="stockBook" name="stock_book" required>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save-product">Lưu</button>
+                                <button type="button" class="btn-cancel-editproduct" onclick="closeEditBookModal()">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- ADD NEW BOOK -->
+                <div id="form-add-bookInfo" class="modal hidden">
+                    <div class="modal-content">
+                        <h3>Add New Book</h3>
+                        <form id="addBookForm" method="POST" action="/booknest_website/AdminController/addNewBookAdmin" enctype="multipart/form-data">
+                            <input type="hidden" id="bookId" name="book_id">
+
+                            <!-- Add input for image upload -->
+                            <label for="imageBook">Upload Image:</label>
+                            <input type="file" id="imageBook" name="image" accept="image/*" required>
+
+                            <label for="titleBook">Title:</label>
+                            <input type="text" id="titleBook" name="title_book" required>
+
+                            <label for="authorBook">Author:</label>
+                            <input type="text" id="authorBook" name="author_book" required>
+
+                            <label for="priceBook">Price:</label>
+                            <input type="text" id="priceBook" name="price_book" required>
+
+                            <label for="descriptionBook">Description:</label>
+                            <input type="text" id="descriptionBook" name="description_book" required>
+
+                            <div class="select-category">
+                                <label for="categoryBook">Category:</label>
+                                <select name="category" id="categoryBook" class="category-book" >
+                                    <option value="Literature books">Literature books</option>
+                                    <option value="Economics books">Economics books</option>
+                                    <option value="Life skills books">Life skills books</option>
+                                    <option value="Health & Lifestyle">Health & Lifestyle</option>
+                                    <option value="Children books">Children books</option>
+                                    <option value="Horror books">Horror books</option>
+                                    <option value="Newly released books">Newly released books</option>
+                                </select>
+                            </div>
+                           
+                            <label for="stockBook">Stock:</label>
+                            <input type="number" id="stockBook" name="stock_book" required>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save-product">Lưu</button>
+                                <button type="button" class="btn-cancel-addproduct" onclick="closeAddBookModal()">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div> 
             </div>
         </main>
     </div>
