@@ -8,13 +8,13 @@ class AdminController extends DController {
     public function loadAdmin() {
       session_start();
             if(isset($_SESSION['admin_login'])){
-                $orderModel = $this->load->model('orderModel');
-                $data['orders'] = $orderModel->getAllOrders('orders');
-                $userModel = $this->load->model('userModel');
+                $orderModel = $this->load->model('OrderModel');
+                $data['orders'] = $orderModel->getAllOrders('Orders');
+                $userModel = $this->load->model('UserModel');
                 $data['allUser'] = $userModel->getAllUsers();
-                $adminModel = $this->load->model('adminModel');
+                $adminModel = $this->load->model('AdminModel');
                 $data['allBook'] = $adminModel->getAllBooks();
-                $this->load->view('admin', $data);
+                $this->load->view('users/admin', $data);
             }else {
                 header("Location: " . BASE_URL . "HomeController/notfound");
                 return;
@@ -22,7 +22,7 @@ class AdminController extends DController {
     }
 
     public function updateUserAdmin(){
-        $adminModel = $this->load->model('adminModel');
+        $adminModel = $this->load->model('AdminModel');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userId = $_POST['userId'];
             $userName = $_POST['userName'];
@@ -63,8 +63,8 @@ class AdminController extends DController {
     }
 
     public function deleteUserAdmin(){
-        $adminModel = $this->load->model('adminModel');
-        $userModel = $this->load->model('userModel');
+        $adminModel = $this->load->model('AdminModel');
+        $userModel = $this->load->model('UserModel');
         $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null; 
 
         $table_users ='users';
@@ -87,7 +87,7 @@ class AdminController extends DController {
     }
 
     public function updateBookAdmin(){
-        $adminModel = $this->load->model('adminModel');
+        $adminModel = $this->load->model('AdminModel');
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {}
             $bookId = $_POST['book_id'];
@@ -142,7 +142,7 @@ class AdminController extends DController {
     }
 
     public function deleteBookAdmin(){
-        $adminModel = $this->load->model('adminModel');
+        $adminModel = $this->load->model('AdminModel');
         $book_id = isset($_GET['book_id']) ? $_GET['book_id'] : null;
 
         $table_books = 'books';
@@ -156,7 +156,7 @@ class AdminController extends DController {
 
     public function addNewBookAdmin(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $adminModel = $this->load->model('adminModel');
+            $adminModel = $this->load->model('AdminModel');
 
             $bookId = $_POST['book_id'];
             $titleBook = $_POST['title_book'];

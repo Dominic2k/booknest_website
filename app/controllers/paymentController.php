@@ -4,10 +4,10 @@ class PaymentController extends DController
 {
     public function buyNowDetail() {
         session_start();
-        $orderModel = $this->load->model('orderModel');
-        $userModel = $this->load->model('userModel');
-        $cartModel = $this->load->model('cartModel');
-        $bookModel = $this->load->model('bookModel');
+        $orderModel = $this->load->model('OrderModel');
+        $userModel = $this->load->model('UserModel');
+        $cartModel = $this->load->model('CartModel');
+        $bookModel = $this->load->model('BookModel');
         $data = [];
     
         if (!isset($_SESSION['current_user'])) {
@@ -74,13 +74,13 @@ class PaymentController extends DController
 
         $data['bankTransferInfo'] = $bankTransferInfo;
 
-    $this->load->view('Payment', $data);
+    $this->load->view('orders/Payment', $data);
     }
   
     public function buyNowCart() {
         session_start();
-        $orderModel = $this->load->model('orderModel');
-        $cartModel = $this->load->model('cartModel');
+        $orderModel = $this->load->model('OrderModel');
+        $cartModel = $this->load->model('CartModel');
         $data = [];
 
         if (!isset($_SESSION['current_user'])) {
@@ -120,12 +120,12 @@ class PaymentController extends DController
 
         $data['bankTransferInfo'] = $bankTransferInfo;
 
-        $this->load->view('Payment', $data);
+        $this->load->view('orders/Payment', $data);
     }
 
     public function order() {
         session_start();
-        $orderModel = $this->load->model('orderModel');
+        $orderModel = $this->load->model('OrderModel');
         $userId = $_SESSION['current_user']['user_id'];
         
         $orderID = $orderModel->getOrderIdInCart('orders', $userId);
@@ -202,6 +202,6 @@ class PaymentController extends DController
             echo "Không tìm thấy thông tin khách hàng!";
         }
         
-        $this->load->view('payment_success', $data);
+        $this->load->view('orders/payment_success', $data);
     }
 }

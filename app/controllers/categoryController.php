@@ -15,8 +15,8 @@ class CategoryController extends DController {
     }
     public function showCategory() {
         session_start();
-        $categoryModel = $this->load->model('categoryModel');
-        $bookModel = $this->load->model('bookModel');
+        $categoryModel = $this->load->model('CategoryModel');
+        $bookModel = $this->load->model('BookModel');
 
         $table_books = 'books';
         $table_categories = 'categories';
@@ -26,6 +26,6 @@ class CategoryController extends DController {
         $data['category'] = $this->findCategoryById($data['categories'], $category_id);
         $data['books'] = $bookModel->getBooksByCategoryId($table_books, $category_id);
 
-        $this->load->view('category', $data);
+        $this->load->view('categories/category', $data);
     }
 }

@@ -6,7 +6,7 @@ class BookController extends DController {
     }
     public function showBookDetail() {
         session_start();
-        $bookModel = $this->load->model('bookModel');
+        $bookModel = $this->load->model('BookModel');
 
         $table_book = 'books';
         $book_id = $_GET['book_id'];
@@ -14,19 +14,12 @@ class BookController extends DController {
         $data['bookById'] = $bookModel->getBookById($table_book, $book_id);
         $data['bookHasTheSameType'] = $bookModel->getBookHasTheSameType($table_book, $book_id);
 
-        $this->load->view('bookdetails', $data);
-    }
-    
-    public function deleteBook(){
-
-    }
-    public function updateBook(){
-
+        $this->load->view('books/bookdetails', $data);
     }
 
     public function showSearch() {
         session_start();
-        $bookModel = $this->load->model('bookModel');
+        $bookModel = $this->load->model('BookModel');
 
         $table_book = 'books';
         $term = isset($_GET['q']) ? $_GET['q'] : null;
@@ -39,6 +32,6 @@ class BookController extends DController {
 
         $data['term'] = $term;
 
-        $this->load->view('search', $data);
+        $this->load->view('books/search', $data);
     }
 }

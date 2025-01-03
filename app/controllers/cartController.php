@@ -6,7 +6,7 @@ class CartController extends DController {
 
     public function viewCart() {
         session_start();
-        $cartModel = $this->load->model('cartModel');
+        $cartModel = $this->load->model('CartModel');
         if (isset($_SESSION['current_user'])) {
             $user_id = $_SESSION['current_user']['user_id'];
             $status = 'inCart';
@@ -19,13 +19,13 @@ class CartController extends DController {
             header('Location: /booknest_website/userController/loginForm');
             exit();
         }
-        $this->load->view('cart', $data);
+        $this->load->view('orders/cart', $data);
     }
 
     public function addToCart() {
         session_start();
-        $cartModel = $this->load->model('cartModel');
-        $orderModel = $this->load->model('orderModel');
+        $cartModel = $this->load->model('CartModel');
+        $orderModel = $this->load->model('OrderModel');
         $book_id = $_GET['book_id'];
         $quantity = $_GET['quantity'];
         
@@ -192,8 +192,8 @@ class CartController extends DController {
 
     public function deleteItemFromCart() {
         session_start();
-        $cartModel = $this->load->model('cartModel');
-        $orderModel = $this->load->model('orderModel');
+        $cartModel = $this->load->model('CartModel');
+        $orderModel = $this->load->model('OrderModel');
         $table_order_items = 'order_items';
 
         $id = $_GET['order_item_id'];
