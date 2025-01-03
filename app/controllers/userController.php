@@ -9,7 +9,7 @@ class UserController extends DController
     }
 
     public function updateUserInfo() {
-        $userModel = $this->load->model('userModel');
+        $userModel = $this->load->model('UserModel');
         // session_start();
         if(isset($_SESSION['current_user']['user_id'])){
             $user_id = $_SESSION['current_user']['user_id'];
@@ -53,7 +53,7 @@ class UserController extends DController
     }
 
     public function registerForm(){
-        $this->load->view('register_form');
+        $this->load->view('users/register_form');
     }
 
     public function forgotPassForm() {
@@ -63,12 +63,12 @@ class UserController extends DController
                 $data['check-process'] = 2;
             };
         }
-        $this->load->view('forgotPassword', $data);
+        $this->load->view('users/forgotPassword', $data);
     }
 
     public function forgotPassword() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $userModel = $this->load->model('userModel');
+            $userModel = $this->load->model('UserModel');
             $email = $_POST['email'];
             $table = 'users';
 
@@ -90,13 +90,13 @@ class UserController extends DController
                 echo "Email does not exist.";
             }
         }
-        $this->load->view('forgotPassword');
+        $this->load->view('users/forgotPassword');
     }
 
     public function resetPassword() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             session_start();
-            $userModel = $this->load->model('userModel');
+            $userModel = $this->load->model('UserModel');
             $enteredCode = $_POST['reset_code'];
             $newPassword = $_POST['new_password'];
 
@@ -135,11 +135,11 @@ class UserController extends DController
                 echo "Reset code expired or invalid.";
             }
         }
-        $this->load->view('forgotPassword');
+        $this->load->view('users/forgotPassword');
     }
 
     public function register() {
-        $userModel = $this->load->model('userModel');
+        $userModel = $this->load->model('UserModel');
 
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -216,12 +216,12 @@ class UserController extends DController
 
     public function loginForm()
     {
-        $this->load->view('login_form');
+        $this->load->view('users/login_form');
     }
 
     public function login()
     {
-        $userModel = $this->load->model('userModel');
+        $userModel = $this->load->model('UserModel');
 
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -284,7 +284,7 @@ class UserController extends DController
 
     public function userProfile() {
     
-        $userModel = $this->load->model('userModel');
+        $userModel = $this->load->model('UserModel');
     
         $table_user = 'users';
         
@@ -295,7 +295,7 @@ class UserController extends DController
         }
     
         $data['user'] = $userModel->getUserByUserid($table_user, $user_id);
-        $this->load->view('profile', $data);
+        $this->load->view('users/profile', $data);
     }
 
     public function logout(){

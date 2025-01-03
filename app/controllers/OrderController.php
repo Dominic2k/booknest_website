@@ -66,7 +66,7 @@ class OrderController extends DController {
     
         $order_id = intval($data['order_id']);
     
-        $orderModel = $this->load->model('orderModel');
+        $orderModel = $this->load->model('OrderModel');
         $orderDetails = $orderModel->getOrderDetails($order_id);
     
         if ($orderDetails) {
@@ -79,7 +79,7 @@ class OrderController extends DController {
     public function getDashboardStats() {
         header('Content-Type: application/json');
         
-        $orderModel = $this->load->model('orderModel');
+        $orderModel = $this->load->model('OrderModel');
         $dashboardData = [
             'weeklyRevenue' => $orderModel->getWeeklyRevenue(),
             'pendingOrders' => $orderModel->getPendingOrders(),

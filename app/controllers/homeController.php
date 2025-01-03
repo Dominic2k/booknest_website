@@ -5,8 +5,8 @@ class HomeController extends DController {
     }
 
     public function index() {
-        $bookModel = $this->load->model('bookModel');
-        $categoryModel = $this->load->model('categoryModel');
+        $bookModel = $this->load->model('BookModel');
+        $categoryModel = $this->load->model('CategoryModel');
 
         $table_categories = 'categories';
         $table_book = 'books';
@@ -30,10 +30,10 @@ class HomeController extends DController {
 
 
 
-        $this->load->view('homepage', $data);
+        $this->load->view('home/homepage', $data);
     }
 
     public function notfound() {
-        $this->load->view('404');
+        $this->load->view('home/404');
     }
 }
