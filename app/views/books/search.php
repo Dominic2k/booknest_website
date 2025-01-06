@@ -250,8 +250,13 @@
                     <p id="Results for">No result</p>
                 <?php else: ?>
                     <div class="book-grid">
-                        <?php
-                        foreach ($books as $key => $value) {
+                        <?php 
+                            $book_ids = []; // Mảng để lưu trữ ID sách đã được hiển thị
+                            foreach ($books as $key => $value) {
+                                if (in_array($value['book_id'], $book_ids)) {
+                                    continue; // Nếu đã hiển thị, bỏ qua lần lặp này
+                                }
+                                $book_ids[] = $value['book_id']; 
                         ?>
                             <a class="book" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>">
                                 <img src="../public/img/<?php echo $value['image_path'] ?>" alt="Book Cover">
