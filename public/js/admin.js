@@ -60,7 +60,7 @@ function deleteUser(userId) {
 }
 // EDIT BOOK
 function openEditBookModal(book) {
-  console.log(book);
+//   console.log(book);
   const editBookmodal = document.querySelector('#form-edit-bookInfo');
   editBookmodal.classList.add('show');
   document.getElementById('bookId').value = book.id;

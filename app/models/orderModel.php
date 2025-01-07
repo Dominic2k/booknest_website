@@ -129,7 +129,6 @@ class OrderModel extends DModel {
         return $this->db->select($sql, $data);
     }
     
-
     public function getOrderItemByOrderIdAndBookId($order_id, $book_id) {
         $sql = "SELECT * FROM order_items WHERE order_id = :order_id AND book_id = :book_id";
 
@@ -175,7 +174,6 @@ class OrderModel extends DModel {
         $data = ['user_id' => $user_id];
         return $this->db->select($sql, $data);
     }
-
 
     public function getAllOrders($table_orders) {
         $sql = "SELECT o.order_id, o.user_id, u.username AS buyer_name, o.total_price, o.status, o.created_at AS order_date
@@ -223,7 +221,6 @@ class OrderModel extends DModel {
         return $this->db->select($sql);
     }
 
-    
     public function getTopSellingBooks() {
         $sql = "SELECT b.title, SUM(oi.quantity) AS total_sold
                 FROM order_items oi
@@ -231,6 +228,20 @@ class OrderModel extends DModel {
                 GROUP BY b.book_id
                 ORDER BY total_sold DESC
                 LIMIT 5";
+        return $this->db->select($sql);
+    }
+
+    public function getOrderItems($orderId) {
+        $sql = "SELECT book_id, quantity FROM order_items WHERE order_id = $orderId";
+        return $this->db->select($sql);
+    }
+
+    public function updateStock($table_order_items, $data, $condition) {
+        return $this->db->update($table_order_items, $data, $condition);
+    }
+
+    public function getQuantity($book_id){
+        $sql = "select books.stock from books where book_id = $book_id";
         return $this->db->select($sql);
     }
 } 
