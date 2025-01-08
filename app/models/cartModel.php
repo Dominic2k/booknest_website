@@ -91,9 +91,6 @@ class cartModel extends DModel {
         return $this->db->select($sqlBooks, $dataBooks);
     }
     
-    
-    
-    
     public function createNewCart($table_orders, $data) {
         return $this->db->insertCart($table_orders, $data);
     }

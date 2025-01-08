@@ -10,6 +10,35 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/swqgfqe5l90l69fjhsx5hywhqrqvo5n5djj34ve5in5yflqu/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <style>
+    .pagination {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        padding: 6px 10px;
+        border: 1px solid rgb(208, 78, 3);
+        margin: 2px;
+        color: #D87D4A;
+        text-decoration: none;
+        min-width: 26px;
+        display: inline-block;
+    }
+
+    .pagination a.active {
+        background-color: #D87D4A;
+        color: white;
+        border-color: #D87D4A;
+    }
+
+    .pagination span {
+        padding: 6px 10px;
+        color: gray;
+        display: inline-block;
+        min-width: 26px;
+    }
+    </style>
 </head>
 <body>
 <?php if (isset($_SESSION['flash_message'])): ?>
@@ -37,167 +66,12 @@
                     <li><a href="#" id="homeBtn"><i class="fa-solid fa-house"></i>Dashboard</a></li>
                     <li><a href="#" id="orderListBtn"><i class="fa-solid fa-cart-shopping"></i>Orders</a></li>
                     <li><a href="#" id="customerListBtn"><i class="fa-solid fa-user"></i>Users</a></li>
-                    <li><a href="#" id="productListBtn"><i class="fa-solid fa-book"></i>Books</a></li>
+                    <li class="active"><a href="#" id="productListBtn"><i class="fa-solid fa-book"></i>Books</a></li>
                 </ul>
             </nav>
         </aside>
         <main class="main-content">
-            <div id="dashboard" class="order-section">
-                <div class="header">
-                    <h1>Dashboard</h1>
-                    <button onclick="window.location.href='<?php echo BASE_URL; ?>UserController/logout'" id="logoutBtn" class="btn-log-out">Logout</button>
-                </div>
-                <div class="dashboard">
-                    <div class="stats">
-                        <div>
-                            <h3>Revenue this week</h3>
-                            <p id="weeklyRevenue">0đ</p>
-                        </div>
-                        <div>
-                            <h3>Order is pending</h3>
-                            <p id="pendingOrders">0</p>
-                        </div>
-                        <div>
-                            <h3>Number of books sold</h3>
-                            <p id="totalBooksSold">0</p>
-                        </div>
-                    </div>
-                    <div class="charts">
-                        <div id="topSellingBooksChart"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="order-list" class="profile-section" style="display: none;">
-                <div class="order-header">
-                    <h2>Order management</h2>
-                </div>
-                <table class="order-table">
-                    <thead>
-                        <tr>
-                            <th>OrderId</th>
-                            <th>Status</th>
-                            <th>Date of purchase</th>
-                            <th>Total price</th>
-                            <th>Buyer</th>
-                            <th>Detail</th>
-                            <th>Mark as Complete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php 
-                        foreach($orders as $key => $value) {
-                        ?>
-                        <tr>
-                            <td class=""><?php echo $value['order_id'] ?></td>
-                            <td><span class="badge <?php echo $value['status'] ?>"><?php echo $value['status'] ?></span></td>
-                            <td><?php echo $value['order_date'] ?></td>
-                            <td><?php echo number_format($value['total_price'], 0, ',', '.') . 'đ'; ?></td>
-                            <td><span class=""><?php echo $value['buyer_name'] ?></span></td>
-                            <td class="show-detail-order" onclick="openModal(this)" data-order-id="<?php echo $value['order_id'] ?>"><i class="fa-solid fa-circle-info"></i></td>
-                            <td class="delete-order"><a href="<?php echo BASE_URL; ?>OrderController/completeOrder?order_id=<?php echo $value['order_id'] ?>"><i class="fa-solid fa-repeat"></i></a></td>    
-                        </tr>
-
-                        <?php    
-                        }
-                        ?>
-
-                    </tbody>
-                </table>
-                <div id="orderDetailModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeModal()">&times;</span>
-                        <h2>Order Details</h2>
-                        <table class="table-modal">
-                            <thead>
-                                <tr>
-                                    <th>Product Name</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                </tr>
-                            </thead>
-                            <tbody id="modalTableBody">
-                                <!-- Nội dung sẽ được cập nhật bằng JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!-- User Management -->
-            <div id="customer-list" class="user-section" style="display: none;">
-                <div id="view-customers">
-                    <h2 class="title-section">User Management</h2>
-                    <div class="user-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Role</th>
-                                    <th>Start Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                foreach($allUser as $key => $value){
-                                ?>
-                                <tr>
-                                    <td><?php echo $value['user_id']?></td>
-                                    <td><?php echo $value['username']?></td>
-                                    <td><?php echo $value['email']?></td>
-                                    <td><?php echo $value['phone']?></td>
-                                    <td><?php echo $value['role']?></td>
-                                    <td><?php echo $value['created_at']?></td>
-                                    <td>
-                                    <button class="edit-btn" onclick="openEditModal({
-                                        id: <?php echo $value['user_id']; ?>,
-                                        username: '<?php echo $value['username']; ?>',
-                                        email: '<?php echo $value['email']; ?>',
-                                        phone: '<?php echo $value['phone']; ?>',
-                                        role: '<?php echo $value['role']; ?>'
-                                    })">Chỉnh Sửa</button>
-                                    
-                                    <button class="delete-btn" onclick="deleteUser(<?php echo $value['user_id']; ?>)">Xóa</button>
-                                    </td>
-                                </tr>
-                                <?php
-                                    } 
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Edit User Form Modal -->
-                <div id="form-edit-userInfo" class="modal-edit hidden">
-                    <div class="modal-content">
-                        <h3>User Information</h3>
-                        <form id="editUserForm" method="POST" action="/booknest_website/AdminController/updateUserAdmin">
-                            <input type="hidden" id="userId" name="userId">
-
-                            <label for="username">Name:</label>
-                            <input type="text" id="username" name="userName" required>
-
-                            <label for="email">Email:</label>
-                            <input type="text" id="email" name="userEmail" required>
-
-                            <label for="phone">Phone:</label>
-                            <input type="text" id="phone" name="userPhone" required>
-
-                            <label for="role">Role:</label>
-                            <input type="text" id="role" name="userRole" required>
-
-                            <div class="form-actions">
-                                <button type="submit" class="save-btn">Lưu</button>
-                                <button type="button" class="cancel-btn" onclick="closeModal()">Hủy</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- Book Management -->
-            <div id="product-list" class="product-section" style="display: none;">
+        <div id="product-list" class="product-section">
                 <div id="view-customers">
                     <h2 class="title-section">Product Management</h2>
                     <button id="btn-add-product" class="btn-add-product" onclick="openAddBookModal()">Add New Book</button>
@@ -256,6 +130,39 @@
                                 ?>
                             </tbody>
                         </table>
+                        <div class="pagination">
+                            <?php
+                                $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                                $totalPages = $data['numberPage'];
+                                if ($currentPage > 1) {
+                                    echo '<a href="?page=' . ($currentPage - 1) . '">Pre</a>';
+                                }
+                                if ($currentPage == 1) {
+                                    echo '<a href="?page=1" class="active">1</a>';
+                                } else {
+                                    echo '<a href="?page=1">1</a>';
+                                }
+                                if ($currentPage > 3) {
+                                    echo '<span>...</span>';
+                                }
+                                if ($currentPage > 1 && $currentPage < $totalPages) {
+                                    echo '<a href="?page=' . $currentPage . '" class="active">' . $currentPage . '</a>';
+                                }
+                                if ($currentPage < $totalPages - 2) {
+                                    echo '<span>...</span>';
+                                }
+                                if ($totalPages > 1) {
+                                    if ($currentPage == $totalPages) {
+                                        echo '<a href="?page=' . $totalPages . '" class="active">' . $totalPages . '</a>';
+                                    } else {
+                                        echo '<a href="?page=' . $totalPages . '">' . $totalPages . '</a>';
+                                    }
+                                }
+                                if ($currentPage < $totalPages) {
+                                    echo '<a href="?page=' . ($currentPage + 1) . '">Next</a>';
+                                }
+                            ?>
+                        </div>
                     </div>
                 </div>
 
@@ -355,5 +262,57 @@
         </main>
     </div>
 <script src="../public/js/admin.js?v=<?php echo time(); ?>"></script>
+<script>
+    // EDIT BOOK
+function openEditBookModal(book) {
+//   console.log(book);
+  const editBookmodal = document.querySelector('#form-edit-bookInfo');
+  editBookmodal.classList.add('show');
+  document.getElementById('bookId').value = book.id;
+  document.getElementById('titleBook').value = book.title;
+  document.getElementById('authorBook').value = book.author;
+  document.getElementById('priceBook').value = book.price;
+  document.getElementById('descriptionBook').value = book.description;
+  document.getElementById('categoryBook').value = book.category;
+  document.getElementById('stockBook').value = book.stock;
+
+}
+
+function closeEditBookModal() {
+  const editBookmodal = document.querySelector('#form-edit-bookInfo');
+  editBookmodal.classList.remove('show');
+}
+
+const editBookmodal = document.querySelector('#form-edit-bookInfo');
+editBookmodal.addEventListener('click', (event) => {
+  if (event.target === editBookmodal) {
+    editBookmodal.classList.remove('show');
+  }
+});
+
+function deleteBook(book_id) {
+  if (confirm(`Bạn có chắc chắn muốn xóa sách với ID: ${book_id}?`)) {
+      window.location.href = `/booknest_website/AdminController/deleteBookAdmin?book_id=${book_id}`;
+  }
+}
+// ADD NEW BOOK
+function openAddBookModal() {
+  const addBookmodal = document.querySelector('#form-add-bookInfo');
+  addBookmodal.classList.add('show');
+}
+
+function closeAddBookModal() {
+  const addBookmodal = document.querySelector('#form-add-bookInfo');
+  addBookmodal.classList.remove('show');
+}
+
+const addBookmodal = document.querySelector('#form-add-bookInfo');
+addBookmodal.addEventListener('click', (event) => {
+  if (event.target === addBookmodal) {
+    addBookmodal.classList.remove('show');
+  }
+});
+</script>
+
 </body>
 </html>

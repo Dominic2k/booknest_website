@@ -159,6 +159,7 @@ class PaymentController extends DController
             $data = ['status' => $status];
 
             $orderModel->updateOrderStatus('orders', $data, "user_id = $userId AND order_id = $order_id");
+            
     
             $paymentData = [
                 'order_id' => $order_id,
@@ -167,6 +168,20 @@ class PaymentController extends DController
                 'user_note' => $userNote
             ];
             $orderModel->insertPayment('payments', $paymentData);
+
+            $orderItems = $orderModel->getOrderItems($order_id);
+
+            foreach ($orderItems as $item) {
+                $table_books = 'books';
+                $bookId = $item['book_id'];
+                $quantity = $item['quantity'];
+
+                $condition = "book_id = $bookId AND stock >= $quantity";
+                $stockOfBook = $orderModel->getQuantity($bookId); 
+                
+                $data = ['stock' => $stockOfBook[0]['stock'] - $quantity];
+                $orderModel->updateStock($table_books, $data, $condition);
+            }
         }
         $table_orders = 'orders';
         $data['bookInOrder'] = $orderModel->getBookInOrder($table_orders, $order_id);

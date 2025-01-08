@@ -30,7 +30,7 @@ class OrderController extends DController {
                     'type' => 'success',
                     'message' => 'Đã cập nhật trạng thái đơn hàng thành công!'
                 ];
-                header('Location: /booknest_website/AdminController/loadAdmin');
+                header('Location: /booknest_website/AdminController/loadOrders');
                 exit();
             }else {
                 // die("chưa update");
@@ -38,7 +38,7 @@ class OrderController extends DController {
                     'type' => 'success',
                     'message' => 'Cập nhật trạng thái đơn hàng thất bại!'
                 ];
-                header('Location: /booknest_website/AdminController/loadAdmin');
+                header('Location: /booknest_website/AdminController/loadOrders');
                 exit();
             }
         }else {
@@ -47,7 +47,7 @@ class OrderController extends DController {
                 'type' => 'success',
                 'message' => 'Đơn hành này đã thanh toán thành công rồi!'
             ];
-            header('Location: /booknest_website/AdminController/loadAdmin');
+            header('Location: /booknest_website/AdminController/loadOrders');
             exit();
         }
 
