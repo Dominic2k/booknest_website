@@ -219,6 +219,7 @@
     <ul class="navigation">
         <li class="nav-link"><a href="/booknest_website/">Home</a></li>
         <li class="nav-link active"><a href="<?php echo BASE_URL; ?>BookController/showSearch">Search</a></li>
+        <li class="nav-link"><a href="<?php echo BASE_URL; ?>homeController/showAboutUs">About us</a></li>
     </ul>
     <div class="right-header">
         <?php if (isset($_SESSION['is_logged_in'])): ?>
