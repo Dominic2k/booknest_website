@@ -50,9 +50,14 @@ class userModel extends DModel {
         $data = [':username' => $username];
         return $this->db->select($sql, $data);
     }
-    public function getAllUsers(){
-        $sql = "SELECT * FROM users;";
+    public function getAllUsers($limit, $offset){
+        $sql = "SELECT * FROM users limit $limit offset $offset;";
 
+        return $this->db->select($sql);
+    }
+
+    public function getCountUsers() {
+        $sql = "select count(*) from users";
         return $this->db->select($sql);
     }
     

@@ -13,21 +13,24 @@ class adminModel extends DModel {
         return $this->db->delete($table_users, $condition, $limit = 1);
     }
 
-    public function getAllBooks(){
+    public function getAllBooks($limit, $offset){
         $sql = "SELECT 
-                    b. book_id,
-                    b. title,
-                    b. author,
-                    b. price,
-                    b. description,
-                    b. stock,
-                    i. path as image_path,
-                    c. name as category_name
-                FROM books b
-                JOIN images i ON b.book_id = i.book_id
-                JOIN categories c ON b.category_id = c.category_id
-                ORDER BY 
-                    b.book_id ASC
+            b.book_id,
+            b.title,
+            b.author,
+            b.price,
+            b.description,
+            b.stock,
+            MIN(i.path) AS image_path, -- Lấy ảnh đầu tiên theo ID nhỏ nhất
+            c.name AS category_name
+        FROM books b
+        JOIN images i ON b.book_id = i.book_id
+        JOIN categories c ON b.category_id = c.category_id
+        GROUP BY 
+            b.book_id, b.title, b.author, b.price, b.description, b.stock, c.name
+        ORDER BY 
+            b.book_id ASC
+        LIMIT $limit OFFSET $offset;
                 ";
         return $this->db->select($sql);
     }
@@ -71,5 +74,10 @@ class adminModel extends DModel {
 
     public function updateImage($table_images, $dataImage, $condition){
         return $this->db->update($table_images, $dataImage, $condition);
+    }
+
+    public function getCountBooks() {
+        $sql = "select count(*) from books";
+        return $this->db->select($sql);
     }
 }

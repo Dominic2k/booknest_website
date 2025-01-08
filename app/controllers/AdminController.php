@@ -5,16 +5,86 @@ class AdminController extends DController {
         parent::__construct();
     }
 
-    public function loadAdmin() {
+    public function loadDashboard() {
+      session_start();
+            if(isset($_SESSION['admin_login'])){                
+                $this->load->view('admin/dashboard');
+            }else {
+                header("Location: " . BASE_URL . "HomeController/notfound");
+                return;
+            }
+    }
+    public function loadOrders() {
       session_start();
             if(isset($_SESSION['admin_login'])){
+                $page = 1;
+                if (isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                }
+                
                 $orderModel = $this->load->model('OrderModel');
-                $data['orders'] = $orderModel->getAllOrders('Orders');
+                
+                $data['countOrders'] = $orderModel->getCountOrders();
+                $numberOrders = $data['countOrders'][0]['count(*)'];
+                $numberOrderOnOnePage = 2;
+                
+                $data['numberPage'] = ceil($numberOrders / $numberOrderOnOnePage);
+
+                $skip = $numberOrderOnOnePage * ($page - 1); 
+                $data['orders'] = $orderModel->getAllOrders('Orders', $numberOrderOnOnePage, $skip);
+
+                $this->load->view('admin/orders', $data);
+            }else {
+                header("Location: " . BASE_URL . "HomeController/notfound");
+                return;
+            }
+    }
+    public function loadCustomers() {
+      session_start();
+            if(isset($_SESSION['admin_login'])){
+                $page = 1;
+                if (isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                }
+                
                 $userModel = $this->load->model('UserModel');
-                $data['allUser'] = $userModel->getAllUsers();
+                
+                $data['countUsers'] = $userModel->getCountUsers();
+                $numberUsers = $data['countUsers'][0]['count(*)'];
+                $numberUserOnOnePage = 8;
+                
+                $data['numberPage'] = ceil($numberUsers / $numberUserOnOnePage);
+
+                $skip = $numberUserOnOnePage * ($page - 1); 
+                $data['allUser'] = $userModel->getAllUsers($numberUserOnOnePage, $skip);
+                $this->load->view('admin/customers', $data);
+            }else {
+                header("Location: " . BASE_URL . "HomeController/notfound");
+                return;
+            }
+    }
+    public function loadBooks() {
+      session_start();
+            if(isset($_SESSION['admin_login'])){
+
+                $page = 1;
+                if (isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                }
+                
                 $adminModel = $this->load->model('AdminModel');
-                $data['allBook'] = $adminModel->getAllBooks();
-                $this->load->view('users/admin', $data);
+                
+                $data['countBooks'] = $adminModel->getCountBooks();
+                $numberBooks = $data['countBooks'][0]['count(*)'];
+                $numberBookOnOnePage = 4;
+                
+                $data['numberPage'] = ceil($numberBooks / $numberBookOnOnePage);
+
+                $skip = $numberBookOnOnePage * ($page - 1); 
+
+                $data['allBook'] = $adminModel->getAllBooks($numberBookOnOnePage, $skip);
+
+                $this->load->view('admin/books', $data);
             }else {
                 header("Location: " . BASE_URL . "HomeController/notfound");
                 return;
@@ -56,7 +126,7 @@ class AdminController extends DController {
             $adminModel->updateUserAdmin($table_users,$data,$condition);
 
             echo "<script>alert('Bạn đã cập nhật thông tin của user thành công!');</script>";
-            echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
+            echo "<script>window.location.href = '/booknest_website/AdminController/loadCustomers';</script>";
             exit();
         }
            
@@ -76,12 +146,12 @@ class AdminController extends DController {
             $adminModel->deleteUserAdmin($table_users, $condition, $limit=1);
             
             echo "<script>alert('Bạn đã xóa user thành công!');</script>";
-            echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
+            echo "<script>window.location.href = '/booknest_website/AdminController/loadCustomers';</script>";
             exit();
         }
         else{
             echo "<script>alert('Bạn không thể xóa User có quyền quản trị!');</script>";
-            echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
+            echo "<script>window.location.href = '/booknest_website/AdminController/loadCustomers';</script>";
             exit();
         }
     }
@@ -134,7 +204,7 @@ class AdminController extends DController {
                         $adminModel->updateImage($table_images, $dataImage, $condition);
 
                         echo "<script>alert('Bạn đã cập nhật thông tin của sách thành công!');</script>";
-                        echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
+                        echo "<script>window.location.href = '/booknest_website/AdminController/loadBooks';</script>";
                         exit();
                 }
             }
@@ -150,7 +220,7 @@ class AdminController extends DController {
         $adminModel->deleteBookAdmin($table_books, $condition, $limit=1);
             
         echo "<script>alert('Bạn đã xóa thông tin sách thành công!');</script>";
-        echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
+        echo "<script>window.location.href = '/booknest_website/AdminController/loadBooks';</script>";
         exit();
     }
 
@@ -201,7 +271,7 @@ class AdminController extends DController {
                         $adminModel->addImage($table_images, $dataImage, $book_id);
 
                         echo "<script>alert('Bạn đã thêm sách mới thành công!');</script>";
-                        echo "<script>window.location.href = '/booknest_website/AdminController/loadAdmin';</script>";
+                        echo "<script>window.location.href = '/booknest_website/AdminController/loadBooks';</script>";
                         exit();
 
                     }

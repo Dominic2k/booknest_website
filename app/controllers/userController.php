@@ -259,7 +259,7 @@ class UserController extends DController
                     'type' => 'success',
                     'message' => 'Đăng nhập admin thành công!'
                     ];
-                    header('Location: /booknest_website/AdminController/loadAdmin');
+                    header('Location: /booknest_website/AdminController/loadDashboard');
                     exit();
                 }else {
                     $_SESSION['current_user'] = $value;

@@ -175,13 +175,13 @@ class OrderModel extends DModel {
         return $this->db->select($sql, $data);
     }
 
-    public function getAllOrders($table_orders) {
+    public function getAllOrders($table_orders, $limit, $skip) {
         $sql = "SELECT o.order_id, o.user_id, u.username AS buyer_name, o.total_price, o.status, o.created_at AS order_date
                 FROM $table_orders o
                 JOIN users u 
                 ON o.user_id = u.user_id
                 WHERE o.status IN ('pending', 'complete')
-                ORDER BY o.created_at DESC;
+                ORDER BY o.created_at DESC limit $limit offset $skip;
                 ";
         return $this->db->select($sql);
     }
@@ -242,6 +242,11 @@ class OrderModel extends DModel {
 
     public function getQuantity($book_id){
         $sql = "select books.stock from books where book_id = $book_id";
+        return $this->db->select($sql);
+    }
+
+    public function getCountOrders() {
+        $sql = "select count(*) from orders";
         return $this->db->select($sql);
     }
 } 
