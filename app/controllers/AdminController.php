@@ -56,7 +56,7 @@ class AdminController extends DController {
                 $data['numberPage'] = ceil($numberUsers / $numberUserOnOnePage);
 
                 $skip = $numberUserOnOnePage * ($page - 1); 
-                $data['allUser'] = $userModel->getAllUsers($numberUserOnOnePage, $skip);
+                $data['allUser'] = $userModel->getAllCustomers($numberUserOnOnePage, $skip);
                 $this->load->view('admin/customers', $data);
             }else {
                 header("Location: " . BASE_URL . "HomeController/notfound");

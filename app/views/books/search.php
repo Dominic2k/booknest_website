@@ -210,9 +210,9 @@
         }
 
         #search-options {
-            border-color: #815C5C;
+            border-color: #ccc;
+            border-radius: 6px;
             color: #815C5C;
-            font-weight: bold;
             font-size: 1rem;
             margin-right: 8px;
             transition: all 0.3s ease;
