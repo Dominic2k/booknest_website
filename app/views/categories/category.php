@@ -25,12 +25,12 @@
 
     .container {
       display: flex;
-      justify-content: center;
+      justify-content: start;
       padding: 90px 80px;
     }
 
     .sidebar {
-      width: 30%;
+      min-width: 300px;
       background-color: #F9F5EE;
       border: 1px solid #815C5C;
       padding: 20px;

@@ -23,11 +23,16 @@ class BookController extends DController {
 
         $table_book = 'books';
         $term = isset($_GET['q']) ? $_GET['q'] : null;
+        $searchOpt = isset($_GET['searchOpt']) ? $_GET['searchOpt'] : null;
 
         if (empty($term)) {
             $data['books'] = $bookModel->getAllBooks($table_book);
         } else {
-            $data['books'] = $bookModel->searchBooksByTerm($term);
+            if (isset($searchOpt) && $searchOpt == "author") {
+                $data['books'] = $bookModel->searchBooksByTermAuthor($term);
+            } else {
+                $data['books'] = $bookModel->searchBooksByTerm($term);
+            }
         }
 
         $data['term'] = $term;
