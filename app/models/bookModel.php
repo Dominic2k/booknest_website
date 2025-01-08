@@ -160,5 +160,24 @@ class bookModel extends DModel {
         return $this->db->select($sql);
     }
 
-}
+    public function searchBooksByTermAuthor($term)
+    {
+        $sql = "SELECT 
+                    b.book_id,
+                    b.title, 
+                    b.price,
+                    b.author,
+                    b.stock,
+                    b.description,
+                    i.path AS image_path
+                FROM 
+                    books b
+                LEFT JOIN 
+                    images i ON b.book_id = i.book_id
+                WHERE b.author LIKE '%$term%';
+                ORDER BY b.stock DESC
+            ";
+        return $this->db->select($sql);
+    }
 
+}

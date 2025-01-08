@@ -208,6 +208,20 @@
             font-style: italic;
             color: #815C5C;
         }
+
+        #search-options {
+            border-color: #815C5C;
+            color: #815C5C;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-right: 8px;
+            transition: all 0.3s ease;
+        }
+
+        #search-options:focus {
+            color: #6b3d3d;
+            outline: none;
+        }
     </style>
 </head>
 <body class="body-wrapper">
@@ -235,11 +249,14 @@
     <div class="search-wrapper">
         <div class="container">
             <main class="search-container">
-                <div class="search-bar">
-                    <input id="search-input" value="" type="text" placeholder="Search your book">
+            <div class="search-bar">
+                    <select id="search-options">
+                        <option value="book">Book Name</option>
+                        <option value="author">Author</option>
+                    </select>
+                    <input id="search-input" type="text" placeholder="Search by name or author of the book">
                     <button id="search-btn">Search</button>
-                </div>
-
+            </div>
                 <?php if (!empty($term)): ?>
                     <h2 id="Results for">Results for: <?php echo $term; ?></h2>
                 <?php else: ?>
