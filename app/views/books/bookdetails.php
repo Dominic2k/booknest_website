@@ -102,7 +102,14 @@
     <div class="same-genre">
         <div class="same-genre-title">Books in the same genre</div>
         <div class="genre-books">
-            <?php foreach ($bookHasTheSameType as $key => $value) { ?>
+            <?php
+            $displayedBooks = [];
+            foreach ($bookHasTheSameType as $key => $value) {
+                if (in_array($value['book_id'], $displayedBooks)) {
+                    continue;
+                }
+                $displayedBooks[] = $value['book_id'];
+            ?>
                 <div class="genre-book">
                     <img src="../public/img/<?php echo $value['image_path'] ?>" alt="Book 1">
                     <a class="name-book genre-book-title" href="/booknest_website/BookController/showBookDetail?book_id=<?php echo $value['book_id']; ?>"><?php echo $value['title']; ?></a>
