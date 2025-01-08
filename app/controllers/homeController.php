@@ -36,4 +36,7 @@ class HomeController extends DController {
     public function notfound() {
         $this->load->view('home/404');
     }
+    public function showAboutUs(){
+        $this->load->view('home/aboutus');
+    }
 }

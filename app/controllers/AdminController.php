@@ -168,12 +168,16 @@ class AdminController extends DController {
 
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $imageTmpPath = $_FILES['image']['tmp_name'];
-                $imageName = uniqid() . '-' . basename($_FILES['image']['name']);
-                $uploadDir = 'public/img/'; 
+
+                $character = 'shd'; 
+                $timestamp = time(); 
+                $imageName = $character . '-' . $timestamp . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+
+                $uploadDir = 'public/img/';
                 $imagePath = $uploadDir . $imageName;
 
                 if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true); // Create the directory if it doesn't exist
+                    mkdir($uploadDir, 0777, true); 
                 }
             
                 if (move_uploaded_file($imageTmpPath, $imagePath)) {
