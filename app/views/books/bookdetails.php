@@ -45,7 +45,7 @@
                 <?php
                 $counter = 0;
                 foreach ($bookById as $value) {
-                    if ($counter == 0) { ?>
+                    if ($counter === 0) { ?>
                         <div class="large-image">
                             <img src="../public/img/<?php echo $value['image_path']; ?>" alt="Book Cover" class="book-image">
                         </div>
